@@ -1,36 +1,18 @@
 {
-	"name": "api",
-	"version": "1.0.0",
-	"description": "https://getstream.io/",
-	"scripts": {
-		"start": "cd dist && node server.js",
-		"watch": "nodemon start",
-		"build": "./build.sh"
-	},
-	"author": [
-		{
-			"name": "Nick Parsons",
-			"email": "nick@getstream.io"
-		}
-	],
-	"license": "BSD-3-Clause",
-	"keywords": [
-		"API",
-		"Express",
-		"REST",
-		"Mongoose",
-		"MongoDB"
-	],
-	"dependencies": {
-		"babel": "^6.23.0",
-		"babel-cli": "^6.26.0",
-		"babel-preset-env": "^1.6.1",
-		"body-parser": "^1.18.3",
-		"express": "^4.16.4",
-		"express-list-endpoints": "^4.0.0",
-		"jsonwebtoken": "^8.4.0",
-		"mongoose": "^5.4.6",
-		"path": "^0.12.7",
-		"util": "^0.11.1"
-	}
+  "name": "capthira",
+  "version": "1.0.0",
+  "description": "Instagram Like for school project 2019",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": " <Marguerite Nana>",
+  "license": "ISC",
+  "devDependencies": {
+    "async": "^2.6.1",
+    "express": "^4.16.4"
+  },
+  "dependencies": {
+    "mongoose": "^5.4.10"
+  }
 }
