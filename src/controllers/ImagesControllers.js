@@ -3,23 +3,52 @@
  * Model : ImagesModels
  * Utilité : Recuperer, supprimer.... les images visibles sur le profil 
  */
-
-var Images = require('../models/ImagesModels');
+var colImages = require('../models/ImagesModels');
 
 /**
  * Creation
  */
 exports.post = function(req,res){
-    console.log("in: Post request\nreq: ", req);
-}
-
+    console.log('CapThira est en écoute au port 3000!');
+    mongoose.connect(mongoDB);
+      mongoose.Promise = global.Promise;
+      var db = mongoose.connection;
+      db.on('error',console.error.bind(console, 'erreur de connection à mongodb'));
+      db.once('open', function(){
+          console.log("Connexion à CapThira réussi")
+      });
+      // var monUtilisateur = new Utilisateurs({nom: 'Nana',prenom: 'Marguerite', age:'22'})
+      var bufimg = "le code de l'img base 64"
+     var toto = Buffer.from(bufimg, 'base64');
+      var monImage1= new colImages({
+        img :toto,
+        titre:"Image1",
+        idUser:"1",
+        datePublication:new Date(),
+        taille:2
+      })
+    monImage1.save(function(err){
+      if(err){throw err;}
+      console.log('img ajouté avec success !')
+    })
+  }
 /**
  * Recuperation
  */
-exports.get = function(req,res){
-    console.log("in: Get request.\nreq: ",req);
-}
-
+exports.get = function (req, res) {
+  
+    var idImage='5c5f4661fc5ddc3484638ae5'
+    //colImages.findOne({_id: req.id}, function (err, image) {
+      colImages.findOne({_id: idImage}, function (err, image) {
+      if (err) {
+        res.status(504);
+        res.end(err);
+      } else {
+         console.log('image : ', image);
+         res.end(image)
+      }
+    });
+  }
 /**
  * Modification
  */
