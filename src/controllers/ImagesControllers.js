@@ -5,12 +5,14 @@
  */
 var colImages = require('../models/ImagesModels');
 
-/**
+
+module.exports={
+  /**
  * Creation
  */
-exports.post = function(req,res){
+  createImage : function(req,res){
       var bufimg = "le code de l'img base 64"
-     var toto = Buffer.from(bufimg, 'base64');
+      var toto = Buffer.from(bufimg, 'base64');
       var monImage1= new colImages({
         img :toto,
         titre:"Image1",
@@ -22,11 +24,11 @@ exports.post = function(req,res){
       if(err){throw err;}
       console.log('img ajouté avec success !')
     })
-  }
-/**
+  },
+  /**
  * Recuperation
  */
-exports.get = function (req, res) {
+  seeImage: function (req, res) {
     var idImage='5c5f4661fc5ddc3484638ae5'
     //colImages.findOne({_id: req.id}, function (err, image) {
       colImages.findOne({_id: idImage}, function (err, image) {
@@ -39,6 +41,8 @@ exports.get = function (req, res) {
       }
     });
   }
+}
+
 /**
  * Modification
  */
