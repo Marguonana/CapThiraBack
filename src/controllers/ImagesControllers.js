@@ -9,20 +9,23 @@ var colImages = require('../models/ImagesModels');
  * Creation
  */
 exports.post = function(req,res){
-      var bufimg = "le code de l'img base 64"
-     var toto = Buffer.from(bufimg, 'base64');
-      var monImage1= new colImages({
-        img :toto,
-        titre:"Image1",
-        idUser:"1",
-        datePublication:new Date(),
-        taille:2
-      })
-    monImage1.save(function(err){
-      if(err){throw err;}
-      console.log('img ajouté avec success !')
-    })
-  }
+
+    var buffer = Buffer.from(req.b64string, 'base64')
+    console.log("in: Post request\nreq: ", req);
+    mongoose.connect(mongoDB);
+    mongoose.Promise = global.Promise;
+    var db = mongoose.connection;
+    db.on('error',console.error.bind(console, 'erreur de connection à mongodb'));
+    db.once('open', function(){
+        console.log("Connexion à dbCapThira réussi")
+    });
+    var monImage = new Image({img: buffer,titre: req.title, idUser: req.id, datePublication: new Date(), taille: '1'})
+    monImage.save(function(err){
+    if(err){throw err;}
+    console.log('Image ajouté avec success !')
+  })
+}
+
 /**
  * Recuperation
  */
