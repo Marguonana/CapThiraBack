@@ -9,15 +9,6 @@ var colImages = require('../models/ImagesModels');
  * Creation
  */
 exports.post = function(req,res){
-    console.log('CapThira est en écoute au port 3000!');
-    mongoose.connect(mongoDB);
-      mongoose.Promise = global.Promise;
-      var db = mongoose.connection;
-      db.on('error',console.error.bind(console, 'erreur de connection à mongodb'));
-      db.once('open', function(){
-          console.log("Connexion à CapThira réussi")
-      });
-      // var monUtilisateur = new Utilisateurs({nom: 'Nana',prenom: 'Marguerite', age:'22'})
       var bufimg = "le code de l'img base 64"
      var toto = Buffer.from(bufimg, 'base64');
       var monImage1= new colImages({
@@ -36,7 +27,6 @@ exports.post = function(req,res){
  * Recuperation
  */
 exports.get = function (req, res) {
-  
     var idImage='5c5f4661fc5ddc3484638ae5'
     //colImages.findOne({_id: req.id}, function (err, image) {
       colImages.findOne({_id: idImage}, function (err, image) {
@@ -45,7 +35,7 @@ exports.get = function (req, res) {
         res.end(err);
       } else {
          console.log('image : ', image);
-         res.end(image)
+         res.end(JSON.stringify(image))
       }
     });
   }
