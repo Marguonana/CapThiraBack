@@ -10,9 +10,11 @@
   "license": "ISC",
   "devDependencies": {
     "async": "^2.6.1",
+    "babel-install": "2.1.0",
     "express": "^4.16.4"
   },
   "dependencies": {
+    "babel": "^6.23.0",
     "mongoose": "^5.4.10"
   }
 }

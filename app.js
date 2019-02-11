@@ -3,26 +3,25 @@ const app = express();
 var mongoose = require('mongoose');
 var hostname = 'localhost';
 var port = 3000;
+var ObjectId = require('mongodb').ObjectID
 var mongoDB = 'mongodb://localhost:27017/dbCapThira';
 var Utilisateurs = require('./src/models/UtilisateursModels');
+var colImages = require('./src/models/ImagesModels');
+var UtilisateursController = require('./src/controllers/UtilisateursControllers');
+var ImagesController = require('./src/controllers/ImagesControllers');
 
+app.post('/post',ImagesController.createImage)
+app.get('/',ImagesController.seeImage)
+app.delete('/delete',ImagesController.deleteImg)
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
-
-app.listen(port, function () {
+app.listen(port,function (req, res) {
   console.log('CapThira est en écoute au port 3000!');
   mongoose.connect(mongoDB);
-    mongoose.Promise = global.Promise;
-    var db = mongoose.connection;
-    db.on('error',console.error.bind(console, 'erreur de connection à mongodb'));
-    db.once('open', function(){
-        console.log("Connexion à CapThira réussi")
-    });
-    var monUtilisateur = new Utilisateurs({nom: 'Nana',prenom: 'Marguerite', age:'22'})
-    monUtilisateur.save(function(err){
-    if(err){throw err;}
-    console.log('Utilisateur ajouté avec success !')
+  mongoose.Promise = global.Promise;
+  var db = mongoose.connection;
+  db.on('error',console.error.bind(console, 'erreur de connection à mongodb'));
+  
+  db.once('open', function(){
+    console.log("Connexion à CapThira réussi")
   })
 })
