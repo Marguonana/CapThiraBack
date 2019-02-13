@@ -10,7 +10,7 @@ var colImages = require('./src/models/ImagesModels');
 var UtilisateursController = require('./src/controllers/UtilisateursControllers');
 var ImagesController = require('./src/controllers/ImagesControllers');
 
-app.post('/post',ImagesController.createImage)
+app.post('/',ImagesController.createImage)
 app.get('/',ImagesController.seeImage)
 app.delete('/delete',ImagesController.deleteImg)
 
