@@ -1,12 +1,14 @@
 /**
  * Controller name: ImagesControllers
  * Model : ImagesModels
- * Utilité : Recuperer, supprimer.... les images visibles sur le profil 
+ * Utilit� : Recuperer, supprimer.... les images visibles sur le profil 
  */
 var colImages = require('../models/ImagesModels');
+var ObjectId = require('mongodb').ObjectID
+
 
 module.exports={
-  /**
+ /**
  * Creation
  */
   createImage : function(req,res){
@@ -21,6 +23,7 @@ module.exports={
       })
     monImage1.save(function(err){
       if(err){throw err;}
+
       console.log('img ajouté avec success !')
     })
   },
@@ -28,7 +31,8 @@ module.exports={
  * Recuperation
  */
   seeImage: function (req, res) {
-    var idImage='5c5f4661fc5ddc3484638ae5'
+
+    var idImage='5c5c1e65c9e28d175871b9e9'
     //colImages.findOne({_id: req.id}, function (err, image) {
       colImages.findOne({_id: idImage}, function (err, image) {
       if (err) {
@@ -39,19 +43,23 @@ module.exports={
          res.end(JSON.stringify(image))
       }
     });
+  },
+  /**
+   * Delete img
+   */
+
+  deleteImg:(req,res)=>{
+    var id ='5c5c2216c435c833e480124d'
+    colImages.remove({_id: ObjectId(id)},(err,res)=>{
+    if(err){throw err}
+    console.log('Suppression éfectuée avec succes!')
+    })
+  },
+  /**
+   * Update
+   */
+  modifierImg:(req,res)=>{
+    //A définir pour le prochaine MVP
   }
 }
 
-/**
- * Modification
- */
-exports.put = function (req, res){
-    console.log("in: Put request.\nreq: ",req);
-}
-
-/**
- * Suppression
- */
-exports.delete = function (req, res){
-    console.log("in: Delete request.\nreq: ",req);
-}

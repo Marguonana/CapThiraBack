@@ -6,23 +6,18 @@
 
 var Images = require('../models/UtilisateursModels');
 
-/**
+
+module.exports={
+    /**
  * Creation
  */
-exports.post = function(req,res){
-    console.log("in: Post request\nreq: ", req);
-    mongoose.connect(mongoDB);
-    mongoose.Promise = global.Promise;
-    var db = mongoose.connection;
-    db.on('error',console.error.bind(console, 'erreur de connection à mongodb'));
-    db.once('open', function(){
-        console.log("Connexion à CapThira réussi")
-    });
-    var monUtilisateur = new Utilisateurs({nom: 'Nana',prenom: 'Marguerite', age:'22'})
-    monUtilisateur.save(function(err){
-        if(err){throw err;}
-        console.log('Utilisateur ajouté avec success !')
-    })
+    createUser: function(req,res){
+        var monUtilisateur = new Utilisateurs({nom: 'Nana',prenom: 'Marguerite', age:'22'})
+        monUtilisateur.save(function(err){
+            if(err){throw err;}
+            console.log('Utilisateur ajouté avec success !')
+        })
+    }
 }
 
 /**
