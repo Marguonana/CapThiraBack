@@ -9,11 +9,17 @@ var Utilisateurs = require('./src/models/UtilisateursModels');
 var colImages = require('./src/models/ImagesModels');
 var UtilisateursController = require('./src/controllers/UtilisateursControllers');
 var ImagesController = require('./src/controllers/ImagesControllers');
+var routesUtilisateurs = require('./src/utilisateurs/routesUtilisateurs');
 
+// Partie Image à modifier
 app.post('/post',ImagesController.createImage)
 app.get('/',ImagesController.seeImage)
-app.delete('/delete',ImagesController.deleteImg)
+app.delete('/delete/:id',ImagesController.deleteImg)
 
+//Partie utilisateurs
+app.use('/', routesUtilisateurs);
+
+//Connection à la DB, Lancement du serveur
 app.listen(port,function (req, res) {
   console.log('CapThira est en écoute au port 3000!');
   mongoose.connect(mongoDB);
@@ -24,4 +30,6 @@ app.listen(port,function (req, res) {
   db.once('open', function(){
     console.log("Connexion à CapThira réussi")
   })
+ 
+  
 })

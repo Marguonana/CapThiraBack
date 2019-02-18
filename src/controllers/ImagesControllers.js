@@ -1,7 +1,7 @@
 /**
  * Controller name: ImagesControllers
  * Model : ImagesModels
- * Utilité : Recuperer, supprimer.... les images visibles sur le profil 
+ * Utilitï¿½ : Recuperer, supprimer.... les images visibles sur le profil 
  */
 var colImages = require('../models/ImagesModels');
 var ObjectId = require('mongodb').ObjectID
@@ -23,7 +23,7 @@ module.exports={
       })
     monImage1.save(function(err){
       if(err){throw err;}
-      console.log('img ajouté avec success !')
+      console.log('img ajoutï¿½ avec success !')
     })
   },
   /**
@@ -47,7 +47,7 @@ module.exports={
    */
 
   deleteImg:(req,res)=>{
-    var id ='5c5c2216c435c833e480124d'
+    var id =req.params.id
     colImages.remove({_id: ObjectId(id)},(err,res)=>{
     if(err){throw err}
     console.log('Supp avec succes!')
@@ -57,7 +57,7 @@ module.exports={
    * Update
    */
   modifierImg:(req,res)=>{
-    //A définir pour le prochaine MVP
+    //A dï¿½finir pour le prochaine MVP
   }
 }
 
