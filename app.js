@@ -9,7 +9,7 @@ var colImages = require('./src/models/ImagesModels');
 var UtilisateursController = require('./src/controllers/UtilisateursControllers');
 var ImagesController = require('./src/controllers/ImagesControllers');
 
-app.post('/',ImagesController.createImage)
+// app.post('/',ImagesController.createImage)
 app.get('/',ImagesController.seeImage)
 
 app.listen(port,function (req, res) {
@@ -21,4 +21,5 @@ app.listen(port,function (req, res) {
       db.once('open', function(){
           console.log("Connexion à CapThira réussi")
         })
+      
 })

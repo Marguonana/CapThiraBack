@@ -10,7 +10,7 @@ module.exports={
  * Creation
  */
   createImage : function(req,res){
-      var bufimg = "le code de l'img base 64"
+      var bufimg = "img baseq64"
       var toto = Buffer.from(bufimg, 'base64');
       var monImage1= new colImages({
         img :toto,
@@ -19,6 +19,7 @@ module.exports={
         datePublication:new Date(),
         taille:2
       })
+      console.log("trying...")
     monImage1.save(function(err){
       if(err){throw err;}
       console.log('img ajouté avec success !')
@@ -30,13 +31,15 @@ module.exports={
   seeImage: function (req, res) {
     var idImage='5c5f4661fc5ddc3484638ae5'
     //colImages.findOne({_id: req.id}, function (err, image) {
-      colImages.findOne({_id: idImage}, function (err, image) {
+      colImages.find({}, function (err, image) {
       if (err) {
         res.status(504);
         res.end(err);
       } else {
-         console.log('image : ', image);
-         res.end(JSON.stringify(image))
+        res.status(200);
+         console.log('image get : ', image);
+         res.send(image)
+         return image;
       }
     });
   }
