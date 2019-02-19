@@ -23,13 +23,14 @@ module.exports={
       })
     monImage1.save(function(err){
       if(err){throw err;}
-      console.log('img ajout� avec success !')
+      console.log('img ajouté avec success !')
     })
   },
   /**
  * Recuperation
  */
   seeImage: function (req, res) {
+
     var idImage='5c5c1e65c9e28d175871b9e9'
     //colImages.findOne({_id: req.id}, function (err, image) {
       colImages.findOne({_id: idImage}, function (err, image) {
@@ -50,14 +51,14 @@ module.exports={
     var id =req.params.id
     colImages.remove({_id: ObjectId(id)},(err,res)=>{
     if(err){throw err}
-    console.log('Supp avec succes!')
+    console.log('Suppression éfectuée avec succes!')
     })
   },
   /**
    * Update
    */
   modifierImg:(req,res)=>{
-    //A d�finir pour le prochaine MVP
+    //A définir pour le prochaine MVP
   }
 }
 
