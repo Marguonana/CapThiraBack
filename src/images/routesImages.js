@@ -14,7 +14,8 @@ router.get('/',(req,res)=>{
     actionsImages.afficherTousLesImages(res);
 })
 
-router.post('/post/:code',(req,res)=>{
+router.post('/post/',(req,res)=>{
+    console.log(req.body)
     actionsImages.AjouterImage(req,res);
 })
 

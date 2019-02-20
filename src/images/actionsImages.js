@@ -18,14 +18,16 @@ module.exports={
     },
     
     AjouterImage:(req,res)=>{
-        var bufimg = req.params.code //"le code de l'img base 64"
+       
+        console.log('TEEEEEEEEEEEEEEEEEEEEEEEST ' + JSON.stringify(req.body));
+        var bufimg = req.body.img; //"le code de l'img base 64"
         var cBufImg = Buffer.from(bufimg, 'base64');
         var monImage= new colImages({
             img :cBufImg,
-            titre:"Image-"+ new Date(),
-            idUser:"0",
-            datePublication:new Date(),
-            taille:0
+            titre:req.body.titre,
+            idUser:req.body.idUser,
+            datePublication:req.body.datePublication,
+            taille:req.body.taille
           })
         processImages.ajouterImage(monImage,res);
         res.send('Image créé !')

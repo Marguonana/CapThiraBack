@@ -5,6 +5,7 @@ var processUtilisateurs = require('./processUtilisateurs');
 
 console.log('la routes')
 router.use(bodyParser.urlencoded({ extended: true }));
+
 router.use(bodyParser.json());
 
 router.get('/:id',(req,res)=>{
