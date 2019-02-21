@@ -23,7 +23,6 @@ module.exports={
       })
     monImage1.save(function(err){
       if(err){throw err;}
-
       console.log('img ajouté avec success !')
     })
   },
@@ -49,7 +48,7 @@ module.exports={
    */
 
   deleteImg:(req,res)=>{
-    var id ='5c5c2216c435c833e480124d'
+    var id =req.params.id
     colImages.remove({_id: ObjectId(id)},(err,res)=>{
     if(err){throw err}
     console.log('Suppression éfectuée avec succes!')

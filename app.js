@@ -3,17 +3,17 @@ const app = express();
 var mongoose = require('mongoose');
 var hostname = 'localhost';
 var port = 3000;
-var ObjectId = require('mongodb').ObjectID
 var mongoDB = 'mongodb://localhost:27017/dbCapThira';
-var Utilisateurs = require('./src/models/UtilisateursModels');
-var colImages = require('./src/models/ImagesModels');
-var UtilisateursController = require('./src/controllers/UtilisateursControllers');
-var ImagesController = require('./src/controllers/ImagesControllers');
+var routesUtilisateurs = require('./src/utilisateurs/routesUtilisateurs');
+var routesImages = require('./src/images/routesImages');
 
-app.post('/',ImagesController.createImage)
-app.get('/',ImagesController.seeImage)
-app.delete('/delete',ImagesController.deleteImg)
+// Partie Image---------------------------------------------------------------
+ app.use('/images',routesImages)
 
+// Partie utilisateurs--------------------------------------------------------
+app.use('/', routesUtilisateurs);
+
+//Connection à la DB, Lancement du serveur------------------------------------
 app.listen(port,function (req, res) {
   console.log('CapThira est en écoute au port 3000!');
   mongoose.connect(mongoDB);
