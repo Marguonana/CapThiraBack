@@ -17,26 +17,26 @@ module.exports={
     },
     
     addUserAction:(req,res)=>{
-        var monUser= new colUsers({
+        var theUser= new colUsers({
             nom:req.body.name,
             prenom:req.body.lastName,
             age:req.body.age,
             mail:req.body.mail,
             mdp: req.body.passeword
         })
-        processUsers.addUserProcess(monUser);
+        processUsers.addUserProcess(theUser);
         console.log('User added !')
     },
 
     updateUserAction:(req,res)=>{
         var id = req.params.id
-        var monUser= new colUsers({
+        var theUser= new colUsers({
             nom:req.body.name,
             prenom:req.body.lastName,
             age:req.body.age,
             mail:req.body.mail,
             mdp: req.body.passeword
         })
-        processUsers.updateUserProcess(id,monUser,res)
+        processUsers.updateUserProcess(id,theUser,res)
     },
 }
