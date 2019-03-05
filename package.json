@@ -10,9 +10,13 @@
   "license": "ISC",
   "devDependencies": {
     "async": "^2.6.1",
+    "babel-install": "2.1.0",
     "express": "^4.16.4"
   },
   "dependencies": {
-    "mongoose": "^5.4.10"
+    "babel": "^6.23.0",
+    "eslint": "^5.13.0",
+    "mongoose": "^5.4.10",
+    "prettier": "^1.16.4"
   }
 }
