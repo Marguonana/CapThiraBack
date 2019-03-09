@@ -5,7 +5,7 @@ const actionsImages = require('./actionsImages');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
-
+//------------------------------------------------------
 router.get('/:id',actionsImages.showImageAction);
 router.get('/', actionsImages.showAllImagesAction);
 router.post('/post',actionsImages.addImageAction);
