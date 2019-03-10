@@ -1,18 +1,18 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 var ImagesSchema = new Schema (
     {
         img: {type: Buffer, required: true},
-        titre:{type:String, required:true},
+        title:{type:String, required:true},
         idUser:{type:Number},
         datePublication: {type:Date, required: true},
-        taille: {type:Number, required: true }
+        size: {type:Number, required: true }
     }
 );
 
 ImagesSchema.virtual('entete').get(function(){
-    return (this.idUser + ' ' + this.titre);
+    return (this.idUser + ' ' + this.title);
 })
 
 ImagesSchema.virtual('url').get(function(){
