@@ -10,7 +10,7 @@ var ImagesSchema = new Schema (
         size: {type:Number, required: true }
     }
 );
-//----------------------------------------------------
+
 ImagesSchema.virtual('entete').get(function(){
     return (this.idUser + ' ' + this.title);
 })
