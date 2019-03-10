@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const routesUsers = require('./src/ControllerUsers/routesUsers');
-const routesImages = require('./src/controllerImages/routesImages');
+const routesUsers = require('./src/compUsers/routesUsers');
+const routesImages = require('./src/compImages/routesImages');
 const dataBase = require('./dataBase');
 
 // Images call-----------------------------------------------------------
