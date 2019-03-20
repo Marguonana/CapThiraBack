@@ -1,12 +1,11 @@
 const colUsers  = require('./ModelsUsers');
 const processUsers = require('./processUsers');
-var jwt = require ('jsonwebtoken');
+const jwt = require ('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 module.exports={
     
     showUserAction:(req,res)=>{ 
-        console.log("ici")
         processUsers.showUserProcess(req.params.id,res);
     },
     
@@ -21,8 +20,7 @@ module.exports={
     addUserAction:(req,res)=>{
         var pwd= bcrypt.hashSync(req.body.password, 8);
         // creattion du token
-        var tokentoken = jwt.sign({nameUser:req.body.name, lastname:req.body.lastname, age:req.body.age, username:req.body.username}, 'SecretTopSecret');
-        console.log('req ', req.body);
+        var tkn = jwt.sign({nameUser:req.body.name, lastname:req.body.lastname, age:req.body.age, username:req.body.username}, 'SecretTopSecret');
 
         var myUser= new colUsers({
             nameUser: req.body.nameUser,
@@ -30,7 +28,7 @@ module.exports={
             age: req.body.age,
             username: req.body.username,
             password: pwd,
-            token: tokentoken
+            token: tkn
         });
         processUsers.addUserProcess(myUser,res);
     },
@@ -39,7 +37,7 @@ module.exports={
         var id = req.params.id
         var pwd= bcrypt.hashSync(req.body.password, 8)
         // creattion du token
-        var tokentoken = jwt.sign({nameUser:req.body.name, lastname:req.body.lastname, age:req.body.age, username:req.body.username}, 'SecretTopSecret');
+        var tkn = jwt.sign({nameUser:req.body.name, lastname:req.body.lastname, age:req.body.age, username:req.body.username}, 'SecretTopSecret');
 
         var myUser= new colUsers({
             nameUser:req.body.name,
@@ -47,7 +45,7 @@ module.exports={
             age:req.body.age,
             username:req.body.username,
             password: pwd,
-            token:tokentoken
+            token:tkn
         })
         processUsers.updateUserProcess(id,myUser,res)
     },
