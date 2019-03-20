@@ -1,6 +1,6 @@
 const colUsers = require('./ModelsUsers');
 const ObjectId = require('mongodb').ObjectID
-var jwt = require ('jsonwebtoken');
+const jwt = require ('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 module.exports={
@@ -60,8 +60,8 @@ module.exports={
             if(err) return res.status(500).send(userName);
             if(!user) return res.status(404).send("No user found.");
 
-            var passewordIsValid= bcrypt.compareSync(passWord,user.password);
-            if (!passewordIsValid) return res.status(401).send({auth: false, token: null})
+            var passwordIsValid= bcrypt.compareSync(passWord,user.password);
+            if (!passwordIsValid) return res.status(401).send({auth: false, token: null})
             
             res.status(200).send({auth:true, token: user.token})
         })
@@ -73,7 +73,6 @@ module.exports={
         jwt.verify(token, 'SecretTopSecret', (err, decode)=>{
             if(err) return res.status(500).send({auth: false, message:'undefined'});
             
-            console.log('decodeeeee',decode);
             colUsers.findOne({token: decode},(err, user)=> {
                 if (err) return res.status(400).send({auth: false,message: "undefined err"});
                 if (!user) return res.status(404).send({auth: false,message: "undefined, not user"});
