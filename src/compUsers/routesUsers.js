@@ -9,7 +9,6 @@ router.use(bodyParser.json());
 // il verifie tout le temps le token
 //app.use(actionsUsers.verifTopkenAction)
 
-router.get('/lahlou',actionsUsers.verifTopkenAction)
 router.get('/showOneUser/:id',actionsUsers.showUserAction);
 router.get('/showAllUsers', actionsUsers.showAllUsersAction);
 router.get('/login',actionsUsers.authenticateUserAction);
