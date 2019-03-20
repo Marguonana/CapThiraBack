@@ -9,7 +9,7 @@ var usersSchema = new Schema (
         age:{type:String, min:18, max:90},
         username:{type:String},
         password: {type:String},
-        token: {type:String},
+        token: {type:String}
     }
 );
 
