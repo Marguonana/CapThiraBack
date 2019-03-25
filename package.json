@@ -14,9 +14,12 @@
     "express": "^4.16.4"
   },
   "dependencies": {
+    "aws-sdk": "^2.423.0",
     "babel": "^6.23.0",
     "bcrypt": "^3.0.4",
     "eslint": "^5.13.0",
+    "fs": "0.0.1-security",
+    "generate-safe-id": "^1.0.2",
     "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.4.10",
     "prettier": "^1.16.4"

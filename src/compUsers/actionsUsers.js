@@ -5,18 +5,6 @@ const bcrypt = require('bcrypt');
 
 module.exports={
     
-    showUserAction:(req,res)=>{ 
-        processUsers.showUserProcess(req.params.id,res);
-    },
-    
-    showAllUsersAction:(req,res)=>{
-       processUsers.showAllUsersProcess(res);
-    },
-    
-    deleteUserAction:(req,res)=>{
-        processUsers.deleteUserProcess(req.params.id,res);
-    },
-    
     addUserAction:(req,res)=>{
         var pwd= bcrypt.hashSync(req.body.password, 8);
         // creattion du token
@@ -31,6 +19,14 @@ module.exports={
             token: tkn
         });
         processUsers.addUserProcess(myUser,res);
+    },
+
+    showUserAction:(req,res)=>{ 
+        processUsers.showUserProcess(req.params.id,res);
+    },
+    
+    showAllUsersAction:(req,res)=>{
+       processUsers.showAllUsersProcess(res);
     },
 
     updateUserAction:(req,res)=>{
@@ -49,10 +45,16 @@ module.exports={
         })
         processUsers.updateUserProcess(id,myUser,res)
     },
+    
+    deleteUserAction:(req,res)=>{
+        processUsers.deleteUserProcess(req.params.id,res);
+    },
 
     authenticateUserAction: (req, res)=>{
         // on a besoin de l'adresse mail et du mot de passe
-        processUsers.authenticateUserProcess(req.body.username,req.body.password,res);
+        var userName = req.body.username;
+        var passWord = req.body.password;
+        processUsers.authenticateUserProcess(userName,passWord,res);
     },
 
     verifTopkenAction: (req, res)=>{
