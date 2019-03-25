@@ -11,7 +11,7 @@ router.use(bodyParser.json());
 
 router.get('/showoneuser/:id',actionsUsers.showUserAction);
 router.get('/showallusers', actionsUsers.showAllUsersAction);
-router.get('/login',actionsUsers.authenticateUserAction);
+router.get('/login/:username/:password',actionsUsers.authenticateUserAction);
 router.post('/post',actionsUsers.addUserAction);
 router.delete('/delete/:id',actionsUsers.deleteUserAction);
 router.put('/update/:id',actionsUsers.updateUserAction);

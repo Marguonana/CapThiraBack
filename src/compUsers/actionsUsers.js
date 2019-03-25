@@ -52,8 +52,8 @@ module.exports={
 
     authenticateUserAction: (req, res)=>{
         // on a besoin de l'adresse mail et du mot de passe
-        var userName = req.body.username;
-        var passWord = req.body.password;
+        var userName = req.params.username;
+        var passWord = req.params.password;
         processUsers.authenticateUserProcess(userName,passWord,res);
     },
 
