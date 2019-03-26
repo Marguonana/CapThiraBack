@@ -1,28 +1,18 @@
 const express = require('express');
 const app = express();
-var mongoose = require('mongoose');
-var hostname = 'localhost';
-var port = 3000;
-var mongoDB = 'mongodb://localhost:27017/dbCapThira';
-var Utilisateurs = require('./src/models/UtilisateursModels');
+const port = 3000;
+const routesUsers = require('./src/compUsers/routesUsers');
+const routesImages = require('./src/compImages/routesImages');
+const dataBase = require('./dataBase');
+const aws = require('./conf_AWS');
 
+// Images call-----------------------------------------------------------
+app.use('/images',routesImages)
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+// Users call------------------------------------------------------------
+app.use('/users', routesUsers);
 
-app.listen(port, function () {
-  console.log('CapThira est en écoute au port 3000!');
-  mongoose.connect(mongoDB);
-    mongoose.Promise = global.Promise;
-    var db = mongoose.connection;
-    db.on('error',console.error.bind(console, 'erreur de connection à mongodb'));
-    db.once('open', function(){
-        console.log("Connexion à CapThira réussi")
-    });
-    var monUtilisateur = new Utilisateurs({nom: 'Nana',prenom: 'Marguerite', age:'22'})
-    monUtilisateur.save(function(err){
-    if(err){throw err;}
-    console.log('Utilisateur ajouté avec success !')
-  })
+//Connection à la DB, Lancement du serveur-------------------------------
+app.listen(port,function (req, res) {
+  console.log('Express server listening on port: ' + port);
 })
