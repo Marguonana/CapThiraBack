@@ -19,7 +19,7 @@ module.exports={
         })
     },
     
-    showImageProcess:(id,key)=>{
+    showImageProcess:(id)=>{
         return new Promise((resolve)=>{
             colImage.findOne({_id: id},(err, img)=> {
                 if (!img) resolve(400)

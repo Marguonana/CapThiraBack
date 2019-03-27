@@ -1,20 +1,18 @@
 const colImages  = require('./modelsImages');
 const processImages = require('./processImages');
 
-const generateSafeId = require('generate-safe-id');
-const re = /(?:\.([^.]+))?$/;
+// const generateSafeId = require('generate-safe-id');
+// const re = /(?:\.([^.]+))?$/;
 
 module.exports={
     
     addImageAction:(req,res)=>{
-        var path= req.body.path;
         var myImage= new colImages({
-            //Générer un nom unique pour l'image pour ne pas écraser d'autres images dans le cloude 
-            key: generateSafeId()+'.'+ re.exec(path)[1],
-            title:req.body.title,
+            img: req.body.img,
+            titre:req.body.titre,
             idUser:req.body.idUser,
             datePublication:req.body.date,
-            size:req.body.size
+            taille:req.body.taille
         })
         processImages.addImageProcess(myImage,path).then((result)=>{
             if(result==400) res.status(result).send('There was a problem adding the informations to the database.');
@@ -24,7 +22,6 @@ module.exports={
     },
 
     showImageAction:(req,res)=>{ 
-        var key = req.body.key;
         var id = req.body.id;
         processImages.showImageProcess(id,key).then((result)=>{
             if(result==404) res.status(result).send("No image found.");
@@ -48,7 +45,6 @@ module.exports={
     },
     
     deleteImageAction:(req,res)=>{
-        var key = req.body.key;
         var id = req.body.id;
         processImages.deleteImageProcess(id,key).then((result)=>{
             if(result==404) res.status(result).send("No image found.");
