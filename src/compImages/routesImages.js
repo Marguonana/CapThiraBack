@@ -10,7 +10,7 @@ router.use(bodyParser.json());
 router.get('/showoneimage',actionsImages.showImageAction);
 router.get('/showallimages/:id', actionsImages.showAllImagesAction);
 router.post('/post',actionsImages.addImageAction);
-router.delete('/delete',actionsImages.deleteImageAction);
+router.delete('/delete/:id',actionsImages.deleteImageAction);
 
 router.put('/update/:id',actionsImages.updateImageAction);
 

@@ -1,6 +1,6 @@
 const colImage = require('./modelsImages');
-
-const ObjectId = require('mongodb').ObjectID;
+const mongoose = require('mongoose');
+const ObjectId = mongoose.ObjectID;
 // const confAWS= require('../../conf_AWS');
 // const aws = require('aws-sdk');
 // const fs = require('fs');
@@ -14,7 +14,7 @@ module.exports={
         return new Promise((resolve)=>{
             myImg.save(function(err){
                 if(err) resolve(400)
-                console.log(myImg);
+                console.log(myImg)
                 resolve('Image posted !')
             })  
         })
@@ -31,7 +31,9 @@ module.exports={
 
     showAllImagesProcess:(idUser)=>{
         return new Promise((resolve)=>{
-            colImage.find({idUser : idUser},(err, img)=> {
+            console.log(idUser)
+            var id = mongoose.Types.ObjectId(idUser);
+            colImage.find({idUser : id},(err, img)=> {
                 if (err) resolve(400)
                 resolve({imgs: JSON.stringify(img)});
             });
@@ -44,7 +46,8 @@ module.exports={
     
     deleteImageProcess:(id)=>{
         return new Promise((resolve)=>{
-            colImage.remove({_id: ObjectId(id)},(err,img)=>{
+            var idO = mongoose.Types.ObjectId(id);
+            colImage.remove({_id: idO},(err,img)=>{
                 if(!img) resolve(400)
                 resolve('Image deleted.');
                 
