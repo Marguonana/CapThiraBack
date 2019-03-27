@@ -7,18 +7,16 @@ const processImages = require('./processImages');
 module.exports={
     
     addImageAction:(req,res)=>{
+        var bufImg = req.body.img
+        var cBufImg = Buffer.from(bufImg, 'base64');
         var myImage= new colImages({
-            img: req.body.img,
+            img: cBufImg,
             titre:req.body.titre,
             idUser:req.body.idUser,
             datePublication:req.body.date,
             taille:req.body.taille
         })
-        processImages.addImageProcess(myImage,path).then((result)=>{
-            if(result==400) res.status(result).send('There was a problem adding the informations to the database.');
-            if(result==6000) res.status(result)
-            res.status(200).send(result)
-        });
+        processImages.addImageProcess(myImage);
     },
 
     showImageAction:(req,res)=>{ 

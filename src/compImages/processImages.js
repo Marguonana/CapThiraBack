@@ -10,10 +10,11 @@ const ObjectId = require('mongodb').ObjectID;
 
 module.exports={
 
-    addImageProcess:(myImg, path)=>{
+    addImageProcess:(myImg)=>{
         return new Promise((resolve)=>{
             myImg.save(function(err){
                 if(err) resolve(400)
+                console.log(myImg);
                 resolve('Image posted !')
             })  
         })
@@ -41,7 +42,7 @@ module.exports={
         // à définir 
     },
     
-    deleteImageProcess:(id,key)=>{
+    deleteImageProcess:(id)=>{
         return new Promise((resolve)=>{
             colImage.remove({_id: ObjectId(id)},(err,img)=>{
                 if(!img) resolve(400)
