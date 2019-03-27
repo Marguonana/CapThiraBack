@@ -8,7 +8,7 @@ router.use(bodyParser.json());
 //------------------------------------------------------
 
 router.get('/showoneimage',actionsImages.showImageAction);
-router.get('/showallimages', actionsImages.showAllImagesAction);
+router.get('/showallimages/:id', actionsImages.showAllImagesAction);
 router.post('/post',actionsImages.addImageAction);
 router.delete('/delete',actionsImages.deleteImageAction);
 

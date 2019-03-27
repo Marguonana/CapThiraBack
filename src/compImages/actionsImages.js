@@ -34,9 +34,11 @@ module.exports={
     },
     
     showAllImagesAction:(req,res)=>{
-        var idUser = req.body.idUser;
+        var idUser = req.params.idUser;
+        console.log(req.params)
         processImages.showAllImagesProcess(idUser).then((result)=>{
             if(result==400) res.status(result).send("There was a problem finding the image.");
+            console.log(result)
             res.status(200).send(result)
         });
     },
