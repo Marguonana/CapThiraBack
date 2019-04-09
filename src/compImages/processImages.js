@@ -1,31 +1,31 @@
 const colImage = require('./modelsImages');
-
 const ObjectId = require('mongodb').ObjectID;
-const confAWS= require('../../conf_AWS');
+const aws_env= require('../../aws_s3_env');
 const aws = require('aws-sdk');
-const fs = require('fs');
-const s3= new aws.S3();
-const nameBucket= 'capthira-file'
+
+const s3= new aws.S3({
+    accessKeyId : aws_env.AWS_ACCESS_KEY,
+    secretAccessKey : aws_env.AWS_SECRET_ACCESS_KEY,
+    region : aws_env.REGION
+});
 
 
 module.exports={
 
-    addImageProcess:(myImg, path)=>{
+    addImageProcess:(myImg, bufImg)=>{
         return new Promise((resolve)=>{
-            var params={
-                Bucket: nameBucket,
-                Body: fs.createReadStream(path),
-                Key: myImg.key,
-            };
-            
-            s3.putObject(params,(err)=>{
-                if(err) resolve(6000) // a revoir
-            });
-            
             myImg.save(function(err){
                 if(err) resolve(400)
+                var params={
+                    Bucket: aws_env.Bucket,
+                    Key: myImg.key,
+                    Body: bufImg,  
+                    ContentEncoding: 'base64',
+                    ContentType: 'image/jpeg'
+                };
+                s3.putObject(params);
                 resolve('Image posted !')
-            })
+            })  
         })
     },
     
@@ -36,13 +36,13 @@ module.exports={
                 if (err) resolve(400)
                 else{
                     var params = { 
-                        Bucket: nameBucket,
+                        Bucket: aws_env.Bucket,
                         Key: key,
                         Expires: 60 // le temps d'expiration de l'url
                     }
                     var url = s3.getSignedUrl('getObject', params);
+                    resolve({img: JSON.stringify(img), url: url });
                 }
-                resolve({img: JSON.stringify(img), s3Url: url});      
             });
         })
     },
@@ -52,16 +52,18 @@ module.exports={
             var listUrl = [];
             colImage.find({idUser : idUser},(err, img)=> {
                 if (err) resolve(400)
-                img.forEach(elment=>{
-                    var params = { 
-                        Bucket: nameBucket,
-                        Key: elment.key,
-                        Expires: 60 // le temps d'expiration de l'url
-                    }
-                    var url = s3.getSignedUrl('getObject', params);
-                    listUrl.push(url);
-                });
-                resolve({imgs: JSON.stringify(img), listurl: listUrl});
+                else{
+                    img.forEach(elment=>{
+                        var params = { 
+                            Bucket: aws_env.Bucket,
+                            Key: elment.key,
+                            Expires: 60 // le temps d'expiration de l'url
+                        }
+                        var url = s3.getSignedUrl('getObject', params);
+                        listUrl.push(url);
+                    });
+                    resolve({imgs: JSON.stringify(img), listUrl: listUrl});
+                }
             });
         })
     },
@@ -70,23 +72,19 @@ module.exports={
         // à définir 
     },
     
-    deleteImageProcess:(id,key)=>{
+    deleteImageProcess:(id)=>{
         return new Promise((resolve)=>{
             colImage.remove({_id: ObjectId(id)},(err,img)=>{
                 if(!img) resolve(404)
                 if(err) resolve(400)
                 else{
                     var params = {
-                        Bucket: nameBucket, 
+                        Bucket: aws_env.Bucket, 
                         Key: key
                        };
-                    s3.deleteObject(params,(err)=>{
-                        if(err) resolve(6000); // a revoir 
-                    });
-                    
+                    s3.deleteObject(params);
+                    resolve('Image deleted.');
                 }
-                resolve('Image deleted.');
-                
             })
         })
     },

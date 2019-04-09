@@ -1,22 +1,22 @@
 const colImages  = require('./modelsImages');
 const processImages = require('./processImages');
-
 const generateSafeId = require('generate-safe-id');
 const re = /(?:\.([^.]+))?$/;
 
 module.exports={
     
     addImageAction:(req,res)=>{
-        var path= req.body.path;
+        var bufImg  = Buffer.from(req.body.img.replace(/^data:image\/\w+;base64,/, ""),'base64');
+
         var myImage= new colImages({
-            //Générer un nom unique pour l'image pour ne pas écraser d'autres images dans le cloude 
-            key: generateSafeId()+'.'+ re.exec(path)[1],
+            //Générer un nom unique pour l'image pour ne pas écraser d'autres images 
+            key: generateSafeId()+'.'+ re.exec(req.body.name)[1],
             title:req.body.title,
             idUser:req.body.idUser,
             datePublication:req.body.date,
             size:req.body.size
         })
-        processImages.addImageProcess(myImage,path).then((result)=>{
+        processImages.addImageProcess(myImage, bufImg).then((result)=>{
             if(result==400) res.status(result).send('There was a problem adding the informations to the database.');
             if(result==6000) res.status(result)
             res.status(200).send(result)

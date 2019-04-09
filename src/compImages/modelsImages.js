@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = require('mongodb').ObjectID;
 
 var ImagesSchema = new Schema (
     {
-
         key: {type:String, required: true},
-
         title:{type:String, required:true},
         idUser:{type:Number},
         datePublication: {type:Date, required: true},
