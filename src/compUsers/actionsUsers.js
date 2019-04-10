@@ -57,9 +57,9 @@ module.exports={
         })
 
         processUsers.updateUserProcess(id,myUser).then((result)=>{
-            if (result==404) res.status(result).send("No User found.")
-            if (result==400) res.status(result).send("There was a problem updating the user.")
-            res.status(200).send(result)
+            if (result==404)return  res.status(result).send("No User found.")
+            if (result==400) return res.status(result).send("There was a problem updating the user.")
+            return res.send(result)
         })
     },
     
@@ -67,7 +67,7 @@ module.exports={
         processUsers.deleteUserProcess(req.params.id).then((result)=>{
             if (result==404) res.status(result).send("No User found.")
             if (result==400) res.status(result).send("There was a problem deleting the user.")
-            res.status(200).send(result)
+            res.send(result)
         })
 
     },
@@ -78,10 +78,10 @@ module.exports={
         var userName = req.params.username;
         var passWord = req.params.password;
         processUsers.authenticateUserProcess(userName,passWord).then((result)=>{
-            if (result==404) res.status(result).send("No user found.");
-            if (result==500) res.status(result).send(userName);
-            if (result==401) res.status(result).send({auth: false, token: null})
-            res.status(200).send(result)
+            if (result==404) return res.status(result).send("No user found.");
+            if (result==500) return res.status(result).send(userName);
+            if (result==401) return res.status(result).send({auth: false, token: null})
+            return res.send(result);
         });
 
     },
@@ -90,11 +90,11 @@ module.exports={
         var token = req.headers ['x-access-token'];
 
         processUsers.verifTokenProcess(token).then((result)=>{
-            if (result==401) res.status(result).send({auth: false, message:'undefined'});
-            if (result==500) res.status(result).send({auth: false, message:'undefined'});
-            if (result==400) res.status(result).send({auth: false,message: "undefined err"});
-            if (result==404) res.status(result).send({auth: false,message: "undefined, not user"});
-            res.status(200).send(result)
+            if (result==401) return res.status(result).send({auth: false, message:'undefined'});
+            if (result==500) return res.status(result).send({auth: false, message:'undefined'});
+            if (result==400) return res.status(result).send({auth: false,message: "undefined err"});
+            if (result==404) return res.status(result).send({auth: false,message: "undefined, not user"});
+            return res.status(200).send(result)
         })
 
     },

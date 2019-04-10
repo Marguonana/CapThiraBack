@@ -6,7 +6,7 @@ var ImagesSchema = new Schema (
     {
         key: {type:String, required: true},
         title:{type:String, required:true},
-        idUser:{type:Number},
+        idUser:{type:String},
         datePublication: {type:Date, required: true},
         size: {type:Number, required: true }
     }

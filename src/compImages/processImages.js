@@ -23,8 +23,11 @@ module.exports={
                     ContentEncoding: 'base64',
                     ContentType: 'image/jpeg'
                 };
-                s3.putObject(params);
-                resolve('Image posted !')
+                console.log(params)
+                s3.putObject(params,(err)=>{
+                    if (err) console.log("erreur s3")
+                });
+                return resolve('Image posted !')
             })  
         })
     },
