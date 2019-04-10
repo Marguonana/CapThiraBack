@@ -47,8 +47,9 @@ module.exports={
     },
     
     deleteImageAction:(req,res)=>{
-        var key = req.body.key;
-        var id = req.body.id;
+        var key = req.params.key;
+        var id = req.params.id;
+        console.log(req.params)
         processImages.deleteImageProcess(id,key).then((result)=>{
             if(result==404) res.status(result).send("No image found.");
             if(result==400) res.status(result).send("There was a problem deleting the image.");

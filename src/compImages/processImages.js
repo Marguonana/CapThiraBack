@@ -75,7 +75,7 @@ module.exports={
         // à définir 
     },
     
-    deleteImageProcess:(id)=>{
+    deleteImageProcess:(id,key)=>{
         return new Promise((resolve)=>{
             colImage.remove({_id: ObjectId(id)},(err,img)=>{
                 if(!img) resolve(404)

@@ -10,7 +10,7 @@ router.use(bodyParser.json({limit: '100mb' , extended: true }));
 router.get('/showoneimage',actionsImages.showImageAction);
 router.get('/showallimages/:idUser', actionsImages.showAllImagesAction);
 router.post('/post',actionsImages.addImageAction);
-router.delete('/delete/:id',actionsImages.deleteImageAction);
+router.delete('/delete/:id/:key',actionsImages.deleteImageAction);
 
 router.put('/update/:id',actionsImages.updateImageAction);
 
