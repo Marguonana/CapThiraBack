@@ -74,9 +74,9 @@ module.exports={
                 if(!user) resolve(404)
                 if(err) resolve(500)
                 
-    
+                if (!user) resolve(404);
                 var passwordIsValid= bcrypt.compareSync(passWord,user.password);
-                if (!passwordIsValid) resolve(401)
+                if (!passwordIsValid) resolve(401);
                 resolve({auth:true, token: user.token, idMongo: user._id})
             })
         })
