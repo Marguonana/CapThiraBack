@@ -71,13 +71,17 @@ module.exports={
     authenticateUserProcess: (userName,passWord)=>{
         return new Promise((resolve)=>{
             colUsers.findOne({username: userName}, (err, user)=>{
-                if(!user) resolve(404)
-                if(err) resolve(500)
+                try{
+                    if(!user) resolve(404)
+                    if(err) resolve(500)
+                    
+                    var passwordIsValid= bcrypt.compareSync(passWord,user.password);
+                    if (!passwordIsValid) resolve(401);
+                    resolve({auth:true, token: user.token, idMongo: user._id})
+                }catch(err){
+                    resolve(404)
+                }
                 
-                if (!user) resolve(404);
-                var passwordIsValid= bcrypt.compareSync(passWord,user.password);
-                if (!passwordIsValid) resolve(401);
-                resolve({auth:true, token: user.token, idMongo: user._id})
             })
         })
         
