@@ -77,17 +77,23 @@ module.exports={
     
     deleteImageProcess:(id,key)=>{
         return new Promise((resolve)=>{
-            colImage.remove({_id: ObjectId(id)},(err,img)=>{
-                if(!img) resolve(404)
-                if(err) resolve(400)
-                else{
-                    var params = {
-                        Bucket: aws_env.Bucket, 
-                        Key: key
-                       };
-                    s3.deleteObject(params);
-                    resolve('Image deleted.');
+            colImage.deleteOne({key: key},(err,img)=>{
+                try{
+                    console.log(id)
+                    if(!img) resolve(404)
+                    if(err) resolve(400)
+                    else{
+                        var params = {
+                            Bucket: aws_env.Bucket, 
+                            Key: key
+                           };
+                        s3.deleteObject(params);
+                        resolve('Image deleted.');
+                    }
+                }catch(err){
+                    resolve('Erreur lors de la suppression')
                 }
+               
             })
         })
     },
