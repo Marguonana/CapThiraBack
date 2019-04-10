@@ -7,12 +7,12 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 // il verifie tout le temps le token
-//app.use(actionsUsers.verifTopkenAction)
+//router.use(actionsUsers.verifTopkenAction)
 
-router.get('/showOneUser/:id',actionsUsers.showUserAction);
-router.get('/showAllUsers', actionsUsers.showAllUsersAction);
-router.get('/login',actionsUsers.authenticateUserAction);
-router.post('/post/',actionsUsers.addUserAction);
+router.get('/showoneuser/:id',actionsUsers.showUserAction);
+router.get('/showallusers', actionsUsers.showAllUsersAction);
+router.get('/login/:username/:password',actionsUsers.authenticateUserAction);
+router.post('/post',actionsUsers.addUserAction);
 router.delete('/delete/:id',actionsUsers.deleteUserAction);
 router.put('/update/:id',actionsUsers.updateUserAction);
 module.exports = router;

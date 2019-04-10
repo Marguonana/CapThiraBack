@@ -5,6 +5,9 @@ const routesUsers = require('./src/compUsers/routesUsers');
 const routesImages = require('./src/compImages/routesImages');
 const dataBase = require('./dataBase');
 
+const aws = require('./conf_AWS');
+
+
 // Images call-----------------------------------------------------------
 app.use('/images',routesImages)
 
@@ -12,6 +15,8 @@ app.use('/images',routesImages)
 app.use('/users', routesUsers);
 
 //Connection à la DB, Lancement du serveur-------------------------------
+dataBase.Connection()
 app.listen(port,function (req, res) {
   console.log('Express server listening on port: ' + port);
 })
+module.exports= app

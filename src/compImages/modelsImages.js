@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 
 var ImagesSchema = new Schema (
     {
-        img: {type: Buffer, required: true},
+
+        key: {type:String, required: true},
+
         title:{type:String, required:true},
         idUser:{type:Number},
         datePublication: {type:Date, required: true},

@@ -1,39 +1,95 @@
 const colImage = require('./modelsImages');
-const ObjectId = require('mongodb').ObjectID
+
+const ObjectId = require('mongodb').ObjectID;
+const confAWS= require('../../conf_AWS');
+const aws = require('aws-sdk');
+const fs = require('fs');
+const s3= new aws.S3();
+const nameBucket= 'capthira-file'
+
 
 module.exports={
+
+    addImageProcess:(myImg, path)=>{
+        return new Promise((resolve)=>{
+            var params={
+                Bucket: nameBucket,
+                Body: fs.createReadStream(path),
+                Key: myImg.key,
+            };
+            
+            s3.putObject(params,(err)=>{
+                if(err) resolve(6000) // a revoir
+            });
+            
+            myImg.save(function(err,image){
+                if(err) resolve(400)
+                resolve({message:'Image posted !',image})
+            })
+        })
+    },
     
-    showImageProcess:(id,res)=>{
-        colImage.findOne({_id: id},(err, img)=> {
-            if (err) return res.status(400).send("There was a problem finding the image.");
-            if (!img) return res.status(404).send("No image found.");
-            res.status(200).send(JSON.stringify(img))        
-        });
+    showImageProcess:(id,key)=>{
+        return new Promise((resolve)=>{
+            colImage.findOne({_id: id},(err, image)=> {
+                if (!image) resolve(404)
+                if (err) resolve(400)
+                else{
+                    var params = { 
+                        Bucket: nameBucket,
+                        Key: key,
+                        Expires: 60 // le temps d'expiration de l'url
+                    }
+                    var url = s3.getSignedUrl('getObject', params);
+                }
+                resolve({image, s3Url: url});      
+            });
+        })
     },
 
-    showAllImagesProcess:(res)=>{
-        colImage.find((err, img)=> {
-            if (err) return res.status(400).send("There was a problem finding the image.");
-            res.status(200).send(JSON.stringify(img))  
-        });
-    },
-    
-    deleteImageProcess:(id,res)=>{
-        colImage.remove({_id: ObjectId(id)},(err,img)=>{
-            if(err) return res.status(400).send("There was a problem deleting the image.");
-            if(!img) return res.status(404).send("No image found.");
-            res.status(200).send('Image deleted.')
+    showAllImagesProcess:(idUser)=>{
+        return new Promise((resolve)=>{
+            var listUrl = [];
+            colImage.find({idUser : idUser},(err, img)=> {
+                if (err) resolve(400)
+                img.forEach(elment=>{
+                    var params = { 
+                        Bucket: nameBucket,
+                        Key: elment.key,
+                        Expires: 60 // le temps d'expiration de l'url
+                    }
+                    var url = s3.getSignedUrl('getObject', params);
+                    listUrl.push(url);
+                });
+                resolve({img, listurl: listUrl});
+            });
         })
     },
-    
-    addImageProcess:(myImg,res)=>{
-        myImg.save(function(err){
-            if(err) return res.status(400).send('There was a problem adding the informations to the database.');
-            res.status(200).send('Image posted !')
-        })
-    },
-    
+
     updateImageProcess:(id,res)=>{
         // à définir 
-    }
+    },
+    
+    deleteImageProcess:(id,key)=>{
+        return new Promise((resolve)=>{
+            colImage.remove({_id: ObjectId(id)},(err,img)=>{
+                if(!img) resolve(404)
+                if(err) resolve(400)
+                else{
+                    var params = {
+                        Bucket: nameBucket, 
+                        Key: key
+                       };
+                    s3.deleteObject(params,(err)=>{
+                        if(err) resolve(6000); // a revoir 
+                    });
+                    
+                }
+                resolve({message:'Image deleted.'});
+                
+            })
+        })
+    },
+    
+
 }
