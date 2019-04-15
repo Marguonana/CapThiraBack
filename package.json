@@ -4,7 +4,7 @@
   "description": "Instagram Like for school project 2019",
   "main": "app.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha --recursive --exit"
   },
   "author": " <Marguerite Nana>",
   "license": "ISC",
@@ -22,15 +22,6 @@
     "babel": "^6.23.0",
     "bcrypt": "^3.0.5",
     "eslint": "^5.13.0",
-/*
-    "express": "^4.16.4"
-  },
-  "dependencies": {
-    "babel": "^6.23.0",
-    "bcrypt": "^3.0.4",
-    "eslint": "^5.13.0",
-    "jsonwebtoken": "^8.5.0",
-*/
     "mongoose": "^5.4.10",
     "prettier": "^1.16.4"
   }

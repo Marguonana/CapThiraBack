@@ -6,102 +6,106 @@ const bcrypt = require('bcrypt');
 module.exports={
     
     addUserProcess:(myUser)=>{  
-        return new Promise((resolve)=>{
+        return new Promise((resolve, reject)=>{
             console.log(myUser);
             myUser.save(function(err,user){
-                if(err) resolve(400);
-                resolve('User posted !/n'+ user)
+                if(err) reject('Error');
+                resolve({message:'User posted !', user})
             })
         })
          
     },
 
     showUserProcess:(id)=>{
-        return new Promise((resolve)=>{
+        return new Promise((resolve,reject)=>{
             colUsers.findOne({_id: id},(err, user)=> {
-                if (!user) resolve(404)
-                if (err) resolve(400)
-                resolve(JSON.stringify(user))    
+                if (!user) reject('Do not found user')
+                if (err) reject('Error')
+                resolve({user})     
             });
         })
     },
 
     showAllUsersProcess:()=>{
-        return new Promise((resolve)=>{
+        return new Promise((resolve,reject)=>{
             colUsers.find((err, user)=> {
-                if (err) resolve(400)
-                resolve(JSON.stringify(user))  
+                if (err) reject('Error')
+                resolve({user})  
             });
-        })
-        
+        })       
     },
     
     updateUserProcess:(id,myUser)=>{
-        return new Promise((resolve)=>{
-            colUsers.findById({_id: ObjectId(id)}, function (err, user) {
-                if (!user) resolve(404)
-                if (err) resolve(400)
+        return new Promise((resolve,reject)=>{
+            colUsers.findOne({_id: ObjectId(id)},(err, user)=> {
+                if (!user) reject('Do not found user')
+                else
+                if (err) reject('Error')
+                else{
                 user.nameUser= myUser.name
                 user.lastname= myUser.lastname
                 user.age= myUser.age
                 user.username= myUser.username
                 user.password= myUser.password
                 user.token= myUser.token
-                user.save((err)=>{
+                user.save((err,user)=>{
                     if(err){
-                        throw err
+                        reject("Error in save methode")
                     }
-                    resolve('User Updated !')
-                });      
-            });
-        })
-        
+                    resolve({message:'User Updated !',user})
+                });  
+            }    
+        });
+    })    
     },
     
     deleteUserProcess:(id)=>{
         return new Promise ((resolve)=>{
-            colUsers.remove({_id: ObjectId(id)},(err,user)=>{
-                if(!user) resolve(404)
-                if(err) resolve(400)
-                resolve('User deleted')
+            colUsers.deleteOne({_id: ObjectId(id)},(err,user)=>{
+                if(!user) reject("Do not found user")
+                else if
+                    (err) reject("Error")
+                else
+                    resolve({message:'User deleted'})
             })
         })
     },
 
     authenticateUserProcess: (userName,passWord)=>{
-        return new Promise((resolve)=>{
+        return new Promise((resolve,reject)=>{
             colUsers.findOne({username: userName}, (err, user)=>{
-                try{
-                    if(!user) resolve(404)
-                    if(err) resolve(500)
-                    
-                    var passwordIsValid= bcrypt.compareSync(passWord,user.password);
-                    if (!passwordIsValid) resolve(401);
-                    resolve({auth:true, token: user.token, idMongo: user._id})
-                }catch(err){
-                    resolve(404)
+                if(!user) 
+                    reject('Do not found user')
+                else if(err) 
+                    reject('Server problem')
+                else{
+                    console.log(user.password +" = "+passWord)
+                
+                var passwordIsValid= bcrypt.compareSync(passWord,user.password);
+                console.log(passwordIsValid)
+                if (!passwordIsValid) 
+                    reject('Invalid password')
+                else
+                    resolve({message:'success login',user,auth:true, token: user.token, idMongo: user._id})
                 }
                 
             })
         })
-        
-       
     },
 
     verifTokenProcess: (token,res)=>{
-        return new Promise((resolve)=>{
-            if(!token) resolve(401)
-        
+        return new Promise((resolve,reject)=>{
+            if(!token) reject('No token')
+       
             jwt.verify(token, 'SecretTopSecret', (err, decode)=>{
-                if(err) resolve(500)
-                
+                if(err) reject('Server Problem')
+               
                 colUsers.findOne({token: decode},(err, user)=> {
-                    if (err) resolve(400)
-                    if (!user) resolve(404)
+                    if (!user) reject('Do not found user')
+                    if (err) reject('Error')
                     resolve(JSON.stringify(user.token));
                 });
             });
         })
-
     },
 }

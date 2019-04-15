@@ -19,26 +19,36 @@ module.exports={
             token: tkn
         });
 
-        processUsers.addUserProcess(myUser).then((result)=>{
-            if(result==400) res.status(result).send('There was a problem adding the informations to the database.')
-            res.status(200).send(result)
-        });
+        processUsers.addUserProcess(myUser)
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((err)=>{
+            res.status(400).send('There was a problem adding the informations to the database.')
+        })
+
     },
 
     showUserAction:(req,res)=>{ 
-        processUsers.showUserProcess(req.params.id).then((result)=>{
-            if(result==404) res.status(result).send("No user found.")
-            if(result==400) res.status(result).send("There was a problem finding the user.");
-            res.status(200).send(result)
+        processUsers.showUserProcess(req.params.id)
+       .then((result)=>{
+            res.status(200).json(result)
+       })
+       .catch((errType)=> {
+            if(errType==="Do not found user") res.status(404).send("No user found.")
+            if(errType==="Error") res.status(400).send("There was a problem finding the user.")
         });
+       
     },
     
-    showAllUsersAction:(req,res)=>{
-       processUsers.showAllUsersProcess().then((result)=>{
-           if(result==400) res.status(result).send("There was a problem finding the user.")
-           res.status(200).send(result)
-       });
-
+    showAllUsersAction:(req,res)=>{ 
+        processUsers.showAllUsersProcess()
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((err) => {
+            res.status(400).send('There was a problem adding the informations to the database.')
+        })
     },
 
     updateUserAction:(req,res)=>{
@@ -56,18 +66,26 @@ module.exports={
             token:tkn
         })
 
-        processUsers.updateUserProcess(id,myUser).then((result)=>{
-            if (result==404)return  res.status(result).send("No User found.")
-            if (result==400) return res.status(result).send("There was a problem updating the user.")
-            return res.send(result)
+        processUsers.updateUserProcess(id,myUser)
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((errType)=>{
+            console.log(errType)
+            if(errType=="Do not found user") res.status(404).send("No user found.")
+            if(errType=="Error in save methode") res.status(400).send('Error in the save methode')
+            if(errType=="Error") res.status(400).send("There was a problem updating the user.")
         })
     },
     
     deleteUserAction:(req,res)=>{
-        processUsers.deleteUserProcess(req.params.id).then((result)=>{
-            if (result==404) res.status(result).send("No User found.")
-            if (result==400) res.status(result).send("There was a problem deleting the user.")
-            res.send(result)
+        processUsers.deleteUserProcess(req.params.id)
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((err) => {
+            if(err==="Do not found user") res.status(404).send("No user found.")
+            if(err==="Error") res.status(400).send("There was a problem deleting the user.")
         })
 
     },
@@ -77,24 +95,32 @@ module.exports={
 
         var userName = req.params.username;
         var passWord = req.params.password;
-        processUsers.authenticateUserProcess(userName,passWord).then((result)=>{
-            if (result==404) return res.status(result).send("No user found.");
-            if (result==500) return res.status(result).send(userName);
-            if (result==401) return res.status(result).send({auth: false, token: null})
-            return res.send(result);
-        });
+        processUsers.authenticateUserProcess(userName,passWord)
+        .then((result)=>{
+            res.status(200).send(result)
+        })
+
+        .catch((err)=>{
+            if(err==="Do not found user") res.status(404).send("No user found.")
+            if(err==='Server problem') res.status(500).send("Server error.")
+            if(err==='Invalid password') res.status(401).send('Invalid password')
+        })
 
     },
 
     verifTopkenAction: (req, res)=>{
         var token = req.headers ['x-access-token'];
 
-        processUsers.verifTokenProcess(token).then((result)=>{
-            if (result==401) return res.status(result).send({auth: false, message:'undefined'});
-            if (result==500) return res.status(result).send({auth: false, message:'undefined'});
-            if (result==400) return res.status(result).send({auth: false,message: "undefined err"});
-            if (result==404) return res.status(result).send({auth: false,message: "undefined, not user"});
-            return res.status(200).send(result)
+        processUsers.verifTokenProcess(token)
+        .then((result)=>{
+            res.status(200).send(result)
+        })
+
+        .catch((err)=>{
+            if(err==='No token') res.status(404).send("token not found.")
+            if(err==='Server Problem') res.status(500).send("Server error.")
+            if(err==='Do not found user') res.status(404).send('No user found.')
+            if(err==='Error') res.status(400).send("There was a problem deleting the user.")
         })
 
     },
