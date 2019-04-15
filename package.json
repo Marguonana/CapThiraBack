@@ -4,20 +4,24 @@
   "description": "Instagram Like for school project 2019",
   "main": "app.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha --recursive --exit"
   },
   "author": " <Marguerite Nana>",
   "license": "ISC",
   "devDependencies": {
     "async": "^2.6.1",
     "babel-install": "2.1.0",
-    "express": "^4.16.4"
+
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "generate-safe-id": "^1.0.2",
+    "jsonwebtoken": "^8.5.1"
   },
   "dependencies": {
+    "aws-sdk": "^2.423.0",
     "babel": "^6.23.0",
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^3.0.5",
     "eslint": "^5.13.0",
-    "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.4.10",
     "prettier": "^1.16.4"
   }

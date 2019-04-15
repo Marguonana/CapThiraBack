@@ -1,39 +1,102 @@
 const colImage = require('./modelsImages');
-const ObjectId = require('mongodb').ObjectID
+const ObjectId = require('mongodb').ObjectID;
+const aws_env= require('../../aws_s3_env');
+const aws = require('aws-sdk');
+
+const s3= new aws.S3({
+    accessKeyId : aws_env.AWS_ACCESS_KEY,
+    secretAccessKey : aws_env.AWS_SECRET_ACCESS_KEY,
+    region : aws_env.REGION
+});
+
 
 module.exports={
+
+    addImageProcess:(myImg, bufImg)=>{
+        return new Promise((resolve)=>{
+            myImg.save(function(err){
+                if(err) resolve(400)
+                var params={
+                    Bucket: aws_env.Bucket,
+                    Key: myImg.key,
+                    Body: bufImg,  
+                    ContentEncoding: 'base64',
+                    ContentType: 'image/jpeg'
+                };
+                console.log(params)
+                s3.putObject(params,(err)=>{
+                    if (err) console.log("erreur s3")
+                });
+                return resolve('Image posted !')
+            })  
+        })
+    },
     
-    showImageProcess:(id,res)=>{
-        colImage.findOne({_id: id},(err, img)=> {
-            if (err) return res.status(400).send("There was a problem finding the image.");
-            if (!img) return res.status(404).send("No image found.");
-            res.status(200).send(JSON.stringify(img))        
-        });
+    showImageProcess:(id,key)=>{
+        return new Promise((resolve)=>{
+            colImage.findOne({_id: id},(err, img)=> {
+                if (!img) resolve(404)
+                if (err) resolve(400)
+                else{
+                    var params = { 
+                        Bucket: aws_env.Bucket,
+                        Key: key,
+                        Expires: 60 // le temps d'expiration de l'url
+                    }
+                    var url = s3.getSignedUrl('getObject', params);
+                    resolve({img: JSON.stringify(img), url: url });
+                }
+            });
+        })
     },
 
-    showAllImagesProcess:(res)=>{
-        colImage.find((err, img)=> {
-            if (err) return res.status(400).send("There was a problem finding the image.");
-            res.status(200).send(JSON.stringify(img))  
-        });
-    },
-    
-    deleteImageProcess:(id,res)=>{
-        colImage.remove({_id: ObjectId(id)},(err,img)=>{
-            if(err) return res.status(400).send("There was a problem deleting the image.");
-            if(!img) return res.status(404).send("No image found.");
-            res.status(200).send('Image deleted.')
+    showAllImagesProcess:(idUser)=>{
+        return new Promise((resolve)=>{
+            var listUrl = [];
+            colImage.find({idUser : idUser},(err, img)=> {
+                if (err) resolve(400)
+                else{
+                    img.forEach(elment=>{
+                        var params = { 
+                            Bucket: aws_env.Bucket,
+                            Key: elment.key,
+                            Expires: 60 // le temps d'expiration de l'url
+                        }
+                        var url = s3.getSignedUrl('getObject', params);
+                        listUrl.push(url);
+                    });
+                    resolve({imgs: JSON.stringify(img), listUrl: listUrl});
+                }
+            });
         })
     },
-    
-    addImageProcess:(myImg,res)=>{
-        myImg.save(function(err){
-            if(err) return res.status(400).send('There was a problem adding the informations to the database.');
-            res.status(200).send('Image posted !')
-        })
-    },
-    
+
     updateImageProcess:(id,res)=>{
         // à définir 
-    }
+    },
+    
+    deleteImageProcess:(id,key)=>{
+        return new Promise((resolve)=>{
+            colImage.deleteOne({key: key},(err,img)=>{
+                try{
+                    console.log(id)
+                    if(!img) resolve(404)
+                    if(err) resolve(400)
+                    else{
+                        var params = {
+                            Bucket: aws_env.Bucket, 
+                            Key: key
+                           };
+                        s3.deleteObject(params);
+                        resolve('Image deleted.');
+                    }
+                }catch(err){
+                    resolve('Erreur lors de la suppression')
+                }
+               
+            })
+        })
+    },
+    
+
 }
