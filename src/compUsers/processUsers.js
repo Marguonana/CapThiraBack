@@ -42,7 +42,7 @@ module.exports={
                 else
                 if (err) reject('Error')
                 else{
-                user.nameUser= myUser.name
+                user.nameUser= myUser.nameUser
                 user.lastname= myUser.lastname
                 user.age= myUser.age
                 user.username= myUser.username
@@ -92,6 +92,10 @@ module.exports={
             })
         })
     },
+
+    // shearchUsersProcess:(strSearch)=>{
+        
+    // },
 
     verifTokenProcess: (token,res)=>{
         return new Promise((resolve,reject)=>{

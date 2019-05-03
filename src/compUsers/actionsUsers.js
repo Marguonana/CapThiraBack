@@ -108,6 +108,18 @@ module.exports={
 
     },
 
+    // shearchUsersActions:(req,res)=>{
+    //     let strSearch=req.params.strSearch;
+    //     processUsers.shearchUsersProcess(strSearch)
+    //     .then((result)=>{
+            
+    //     })
+
+    //     .catch((typeErr)=>{
+            
+    //     })
+    // },
+
     verifTopkenAction: (req, res)=>{
         var token = req.headers ['x-access-token'];
 
