@@ -14,6 +14,7 @@ module.exports={
             nameUser: req.body.nameUser,
             lastname: req.body.lastname,
             age: req.body.age,
+            psudo:req.body.psudo,
             username: req.body.username,
             password: pwd,
             token: tkn
@@ -42,7 +43,8 @@ module.exports={
     },
     
     showAllUsersAction:(req,res)=>{ 
-        processUsers.showAllUsersProcess()
+        psudo=req.params.psudo
+        processUsers.showAllUsersProcess(psudo)
         .then((result)=>{
             res.status(200).json(result)
         })
@@ -61,6 +63,7 @@ module.exports={
             nameUser:req.body.name,
             lastname:req.body.lastname,
             age:req.body.age,
+            psudo:req.body.psudo,
             username:req.body.username,
             password: pwd,
             token:tkn

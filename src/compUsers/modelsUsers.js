@@ -7,6 +7,7 @@ var usersSchema = new Schema (
         nameUser: {type: String, required: true},
         lastname:{type:String, required:true},
         age:{type:String, min:18, max:90},
+        psudo:{type:String, required:true},
         username:{type:String},
         password: {type:String},
         token: {type:String}

@@ -26,9 +26,9 @@ module.exports={
         })
     },
 
-    showAllUsersProcess:()=>{
+    showAllUsersProcess:(psudo)=>{
         return new Promise((resolve,reject)=>{
-            colUsers.find((err, user)=> {
+            colUsers.find({psudo:psudo},(err, user)=> {
                 if (err) reject('Error')
                 resolve({user})  
             });
@@ -45,6 +45,7 @@ module.exports={
                 user.nameUser= myUser.nameUser
                 user.lastname= myUser.lastname
                 user.age= myUser.age
+                user.psudo= myUser.psudo,
                 user.username= myUser.username
                 user.password= myUser.password
                 user.token= myUser.token
