@@ -61,11 +61,12 @@ module.exports={
     },
 
     showAllImagesProcess:(idUser)=>{
-        return new Promise((resolve)=>{
+        return new Promise((resolve,reject)=>{
             var listUrl = [];
             colImage.find({idUser : idUser},(err, img)=> {
-                if (err) resolve(400)
-                else{
+                if(err){
+                    reject('Error')
+                }else{
                     img.forEach(elment=>{
                         var params = { 
                             Bucket: aws_env.Bucket,
@@ -86,22 +87,26 @@ module.exports={
     },
     
     deleteImageProcess:(id,key)=>{
-        return new Promise((resolve)=>{
+        return new Promise((resolve,reject)=>{
             colImage.deleteOne({key: key},(err,img)=>{
                 try{
                     console.log(id)
-                    if(!img) resolve(404)
-                    if(err) resolve(400)
-                    else{
-                        var params = {
-                            Bucket: aws_env.Bucket, 
-                            Key: key
-                           };
-                        s3.deleteObject(params);
-                        resolve({message:'Image deleted.'});
-                    }
+                    if(!img){
+                        reject('No image found')  
+                    }else{
+                        if(err){
+                            reject('Error')
+                        }else{
+                            var params = {
+                                Bucket: aws_env.Bucket, 
+                                Key: key
+                            };
+                            s3.deleteObject(params);
+                            resolve({message:'Image deleted.'});
+                        }
+                    } 
                 }catch(err){
-                    resolve('Erreur lors de la suppression')
+                    reject('Erreur lors de la suppression')
                 }
                
             })
