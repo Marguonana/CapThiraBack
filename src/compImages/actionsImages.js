@@ -15,30 +15,44 @@ module.exports={
             datePublication:req.body.datePublication,
             size:req.body.taille
         })
-        processImages.addImageProcess(myImage, bufImg).then((status)=>{
-            console.log(status)
-            if(status==400) return res.status(status).send('There was a problem adding the informations to the database.');
-            if(status==6000) return res.status(status)
-            return res.status(status)
-        });
+        console.log(myImage)
+        processImages.addImageProcess(myImage, bufImg)
+        .then((result)=>{
+            // console.log(status)
+            return res.status(200).json(result)
+        })
+
+        .catch((typeErr)=>{
+            if(typeErr==="Erreur du save"){
+                return res.status(400).send('There was a problem adding the informations to the database.');  
+            } 
+            if(typeErr==="erreur s3"){
+                return res.status('There was problem adding the image to the server S3')
+            } 
+        })
+
     },
 
     showImageAction:(req,res)=>{ 
         var key = req.params.key;
-        var id = req.params.id;
+        var id = req.params.idUser;
         processImages.showImageProcess(id,key).then((result)=>{
-            if(result==404) res.status(result).send("No image found.");
-            if(result==400) res.status(result).send("There was a problem finding the image.");
-            res.status(200).send(result)
-        });
+            res.status(200).json(result)
+        })
+        .catch((typeErr)=>{
+            if(typeErr==="image not found") res.status(404).send("Image not found !");
+            if(typeErr==="erreur") res.status(400).send("There was a problem finding the image.");
+
+        })
     },
     
     showAllImagesAction:(req,res)=>{
         var idUser = req.params.idUser;
         console.log(req.params)
-        processImages.showAllImagesProcess(idUser).then((result)=>{
-            if(result==400) res.status(result).send("There was a problem finding the image.");
-            res.status(200).send(result)
+        processImages.showAllImagesProcess(idUser)
+        .then((result)=>{
+            if(result==400) return res.status(result).send("There was a problem finding the image.")
+            res.status(200).json(result)
         });
     },
 

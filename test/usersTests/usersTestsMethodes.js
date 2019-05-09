@@ -3,15 +3,13 @@ const expect =require('chai').expect
 const request=require('supertest')
 const sinon= require('sinon')
 const app = require('../../app')
-const db = require('../../dataBase')
+const db= require('../../dataBase')
 const ObjectId = require('mongodb').ObjectID
 
-
 describe('tests users',()=>{
-    
-    
 
     describe('post /users',()=>{
+        
         it('it should create new user',(done)=>{
             request(app).post('/users/post')
             .send({
@@ -19,7 +17,7 @@ describe('tests users',()=>{
                 lastname: 'Mohand Ameziane',
                 age: 23,
                 username: 'mohandamezianezaidi@gmail.com',
-                password: 'pwd123654'
+                password: 'pwd1236546'
             })
             .then((res)=> {
                 expect(res.status).to.equal(200);

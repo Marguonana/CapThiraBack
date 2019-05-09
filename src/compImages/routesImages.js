@@ -7,7 +7,7 @@ router.use(bodyParser.urlencoded({limit: '100mb' , extended: true }));
 router.use(bodyParser.json({limit: '100mb' , extended: true }));
 //------------------------------------------------------
 
-router.get('/showoneimage',actionsImages.showImageAction);
+router.get('/showoneimage/:idUser/:key',actionsImages.showImageAction);
 router.get('/showallimages/:idUser', actionsImages.showAllImagesAction);
 router.post('/post',actionsImages.addImageAction);
 router.delete('/delete/:id/:key',actionsImages.deleteImageAction);

@@ -17,4 +17,7 @@ router.post('/post',actionsUsers.addUserAction);
 
 router.delete('/delete/:id',actionsUsers.deleteUserAction);
 router.put('/update/:id',actionsUsers.updateUserAction);
+
+//router.get('/search/:strSearch',actionsUsers.shearchUsersActions);
+
 module.exports = router;
