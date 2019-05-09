@@ -16,6 +16,7 @@ describe('tests users',()=>{
                 nameUser: 'ZAIDI',
                 lastname: 'Mohand Ameziane',
                 age: 23,
+                pseudo:'testUser',
                 username: 'mohandamezianezaidi@gmail.com',
                 password: 'pwd1236546'
             })
@@ -40,8 +41,8 @@ describe('tests users',()=>{
 
     describe('GET /All Users', () => {
         it('it should Get all the Users', (done) => {
-            
-            request(app).get('/users/showAllUsers')
+            let pseudo = 'ramadan'
+            request(app).get('/users/showAllUsers/'+pseudo)
             .then((res)=> {
                 expect(res.status).to.equal(200);
                 expect(res.body).to.be.a('object')
@@ -113,6 +114,7 @@ describe('tests users',()=>{
                 name: 'BENARAB',
                 lastname: 'Lahlou',
                 age: 24,
+                pseudo:"testModif",
                 username: 'lahloubena@gmail.com',
                 password: 'Zaidi2'
             })

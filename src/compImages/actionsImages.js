@@ -19,15 +19,15 @@ module.exports={
         processImages.addImageProcess(myImage, bufImg)
         .then((result)=>{
             // console.log(status)
-            return res.status(200).json(result)
+            res.status(200).json(result)
         })
 
         .catch((typeErr)=>{
             if(typeErr==="Erreur du save"){
-                return res.status(400).send('There was a problem adding the informations to the database.');  
+                res.status(400).json('There was a problem adding the informations to the database.');  
             } 
             if(typeErr==="erreur s3"){
-                return res.status('There was problem adding the image to the server S3')
+                res.status(500).send('There was problem adding the image to the server S3')
             } 
         })
 
@@ -51,9 +51,11 @@ module.exports={
         console.log(req.params)
         processImages.showAllImagesProcess(idUser)
         .then((result)=>{
-            if(result==400) return res.status(result).send("There was a problem finding the image.")
             res.status(200).json(result)
-        });
+        })
+        .catch((typeErr)=>{
+            res.status(400).send("There was a problem finding the image.")
+        })
     },
 
     updateImageAction:(req,res)=>{
@@ -65,12 +67,13 @@ module.exports={
         var id = req.params.id;
         console.log(req.params)
         processImages.deleteImageProcess(id,key).then((result)=>{
-            if(result==404) res.status(result).send("No image found.");
-            if(result==400) res.status(result).send("There was a problem deleting the image.");
-            if(result==6000) res.status(result)
             res.status(200).send(result)
-            
-        });
+        })
+        .catch((typeErr)=>{
+            if(result==='No image found') res.status(404).send("No image found.");
+            if(result==='Error') res.status(400).send("There was a problem deleting the image.");
+            if(result==='Erreur lors de la suppression') res.status(500).send('Erreur lors de la suppression')
+        })
     },
     
 
