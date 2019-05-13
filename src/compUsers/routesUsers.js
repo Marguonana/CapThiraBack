@@ -15,6 +15,9 @@ router.get('/showallusers', actionsUsers.showAllUsersAction);
 router.get('/login/:username/:password',actionsUsers.authenticateUserAction);
 router.post('/post',actionsUsers.addUserAction);
 
+router.post('/subscribe',actionsUsers.subscribeAction);
+router.get('/showallsubscriber/:id',actionsUsers.showAllSubscriberAction);
+
 router.delete('/delete/:id',actionsUsers.deleteUserAction);
 router.put('/update/:id',actionsUsers.updateUserAction);
 module.exports = router;
