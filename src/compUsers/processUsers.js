@@ -113,4 +113,35 @@ module.exports={
             });
         })
     },
+
+    subscribeProcess: (idUser, subscriber) =>{
+        return new Promise((resolve,reject)=>{
+            colUsers.findOne({_id: ObjectId(idUser)},(err, user)=> {
+                if (!user) reject('Do not found user')
+                else
+                if (err) reject('Error')
+                else{
+                user.subscribe.push(subscriber)
+                user.save((err,user)=>{
+                    if(err){
+                        reject("Error in save methode")
+                    }
+                    resolve({message:'Subscriber added!',user})
+                });  
+            }    
+        });
+    })    
+    }, 
+
+    showAllSubscriberProcess: (idUser) =>{
+        return new Promise((resolve,reject)=>{
+            colUsers.findOne({_id: idUser},(err, user)=> {
+                if (!user) reject('Do not found user')
+                if (err) reject('Error')
+                subscriber = user.subscribe
+                resolve({subscriber})     
+            });
+        })
+    }
+
 }

@@ -10,6 +10,7 @@ var usersSchema = new Schema (
         pseudo:{type:String, required:true},
         username:{type:String},
         password: {type:String},
+        subscribe: [],
         token: {type:String}
     }
 );
