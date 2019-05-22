@@ -11,6 +11,7 @@ var usersSchema = new Schema (
         username:{type:String},
         password: {type:String},
         subscribe: [],
+        subscriber: [],
         token: {type:String}
     }
 );
