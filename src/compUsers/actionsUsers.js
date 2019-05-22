@@ -141,10 +141,11 @@ module.exports={
     },
 
     subscribeAction: (req, res) =>{
-        const subscriber = {idSubscriber : req.body.idSubscriber, nameSubscriber : req.body.nameSubscriber, lastnameSubscriber : req.body.lastnameSubscriber};
-        const idUser = req.body.idUser;
+        const subscription = {idSubscription : req.body.idSubscription, pseudoSubscription : req.body.pseudoSubscription};
+        const idSubscriber = req.body.idSubscriber;
+        const pseudoSubscriber = req.body.pseudoSubscriber;
         
-        processUsers.subscribeProcess(idUser,subscriber)
+        processUsers.subscribeProcess(idSubscriber,subscription,pseudoSubscriber)
         .then((result)=>{
             res.status(200).json(result)
         })
