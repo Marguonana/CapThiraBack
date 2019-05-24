@@ -10,7 +10,8 @@ const usersSchema = new Schema (
         pseudo:{type:String, required:true},
         username:{type:String},
         password: {type:String},
-        listAbbo:[],
+        subscribe: [],
+        subscriber: [],
         token: {type:String}
     }
 );

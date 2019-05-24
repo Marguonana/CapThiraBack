@@ -140,4 +140,35 @@ module.exports={
         })
 
     },
+
+    subscribeAction: (req, res) =>{
+        const subscription = {idSubscription : req.body.idSubscription, pseudoSubscription : req.body.pseudoSubscription};
+        const idSubscriber = req.body.idSubscriber;
+        const pseudoSubscriber = req.body.pseudoSubscriber;
+        
+        processUsers.subscribeProcess(idSubscriber,subscription,pseudoSubscriber)
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((errType)=>{
+            console.log(errType)
+            if(errType=="Do not found user") res.status(404).send("No user found.")
+            if(errType=="Error in save methode") res.status(400).send('Error in the save methode')
+            if(errType=="Error") res.status(400).send("There was a problem adding the subscriber.")
+        })
+    },
+
+    showAllSubscriberAction: (req, res) =>{
+        const idUser = req.params.id;
+
+        processUsers.showAllSubscriberProcess(idUser)
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((errType)=>{
+            console.log(errType)
+            if(errType=="Do not found user") res.status(404).send("No user found.")
+            if(errType=="Error") res.status(400).send("There was a problem showing the subscriber.")
+        })
+    }
 }
