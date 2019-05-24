@@ -17,6 +17,7 @@ module.exports={
             pseudo:req.body.pseudo,
             username: req.body.username,
             password: pwd,
+            listAbbo: ["5ca2685087cf0102f401068a","5ca2685087cf0102f401068b"],
             token: tkn
         });
 

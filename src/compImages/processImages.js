@@ -1,13 +1,17 @@
 const colImage = require('./modelsImages');
+const mongoose= require('mongoose')
 const ObjectId = require('mongodb').ObjectID;
 const aws_env= require('../../aws_s3_env');
 const aws = require('aws-sdk');
+const async=require('async')
+mongoose.Promise=global.Promise
 
 const s3= new aws.S3({
     accessKeyId : aws_env.AWS_ACCESS_KEY,
     secretAccessKey : aws_env.AWS_SECRET_ACCESS_KEY,
     region : aws_env.REGION
 });
+
 
 
 module.exports={
@@ -113,5 +117,58 @@ module.exports={
         })
     },
     
+    showAllImagesSubscribersProcess:(myListUser)=>{
+        return new Promise((resolve,reject)=>{
+            let listUrl = []
+            let listImages=[];
+            callbackSubscriberImage(myListUser)
+            .then( res => {
+                resolve({message: "subscriber images !",listImgs: res, listUrl: listUrl});
+            })
+            .catch( err => {
+                reject(err);
+            })
+            
+           
+        })
+      
+    }
+
 
 }
+
+callbackSubscriberImage = (myListUser) => {    
+    return new Promise((resolve, reject)=>{
+        let listImages=[];
+        myListUser.forEach( (idUser,index) => {
+            colImage.find({idUser:idUser})
+            .exec()
+            .then((img)=>{
+                /*img.forEach((elment)=>{
+                    var params = { 
+                        Bucket: aws_env.Bucket,
+                        Key: elment.key,
+                        Expires: 60 
+                        }
+                    let url = s3.getSignedUrl('getObject', params);
+                    listUrl= listUrl.concat(url);
+                    console.log(listUrl)
+                })*/
+                listImages.push(img);
+                console.log('toto',myListUser.length);
+                if (index == myListUser.length-1){
+                    console.log('LISTiMG', listImages);
+                    resolve(listImages);
+                }
+                
+            })
+            .catch((errType)=>{
+                console.log('catch error');
+                reject('Error 404');
+            })
+        })               
+        
+    })  
+
+}
+

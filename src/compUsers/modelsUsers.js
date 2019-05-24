@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-var usersSchema = new Schema (
+const usersSchema = new Schema (
     {
         nameUser: {type: String, required: true},
         lastname:{type:String, required:true},
@@ -10,6 +10,7 @@ var usersSchema = new Schema (
         pseudo:{type:String, required:true},
         username:{type:String},
         password: {type:String},
+        listAbbo:[],
         token: {type:String}
     }
 );

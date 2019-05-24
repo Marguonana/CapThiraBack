@@ -7,15 +7,16 @@ const colImage= require('../../src/compImages/modelsImages')
 const image = "/9j/4AAQSkZJRgABAQEASABIAAD/"
 describe('tests images',()=>{
  
-    describe('post /image',()=>{
+    /*describe('post /image',()=>{
         it('it should sauve new image',(done)=>{
             request(app).post('/images/post')
             .send({
                 img:image,
                 name:"My image",
                 titre:'imgTest',
-                idUser:'5ca2685087cf0102f401068a',
+                idUser:'5ca2685087cf0102f401068b',
                 datePublication:'2019-10-10',
+                listAbo:[],
                 taille:11
             })
             .then((res)=> {
@@ -30,7 +31,7 @@ describe('tests images',()=>{
             
         })
     })
-
+    */
     describe('GET /All images', () => {
         it('it should Get all the images', (done) => {
             
