@@ -78,22 +78,19 @@ module.exports={
     },
 
     showAllImagesSubscribersAction:(req,res)=>{
-        let myUser;
-        idUser= req.params.idUser;
-        processUsers.showUserProcess(idUser)
-        .then((theUser)=>{
-            console.log(theUser.user.listAbbo)
-            processImages.showAllImagesSubscribersProcess(theUser.user.listAbbo)
-            .then((allImages)=>{
-                res.status(200).json(allImages)
+        processUsers.showUserProcess(req.params.idUser)
+        .then((myUser)=>{
+            processImages.showAllImagesSubscribersProcess(myUser.user.subscribe)
+            .then((allImagesSubscribe)=>{
+                res.status(200).json(allImagesSubscribe)
             })
             .catch((typeERR)=>{
-                console.log(typeERR)
+                res.status(404).json("There was a problem finding the image.")
             })
         })
-        .catch((typeErsr)=>{
-            if (typeErr==='Do not found user') res.status(404).send('Do not found user')
-            if (typeErr==='Error') res.status(404).send('Error in your request !')
+        .catch((errTypeUser)=>{
+            if (errTypeUser==='Do not found user') res.status(404).send('Do not found user')
+            if (errTypeUser==='Error') res.status(404).send('Error in your request !')
         })
     }
     

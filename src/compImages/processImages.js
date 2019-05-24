@@ -22,7 +22,7 @@ module.exports={
                 if(err) {
                     reject("Erreur du save");
                 }else{
-                    var params={
+                    let params={
                         Bucket: aws_env.Bucket,
                         Key: myImg.key,
                         Body: bufImg,  
@@ -50,12 +50,12 @@ module.exports={
                     if (err){
                         reject("erreur")
                     }else{
-                        var params = { 
+                        let params = { 
                             Bucket: aws_env.Bucket,
                             Key: key,
                             Expires: 60 // le temps d'expiration de l'url
                         }
-                        var url = s3.getSignedUrl('getObject', params);
+                        let url = s3.getSignedUrl('getObject', params);
                         resolve({message: "One image !",img: JSON.stringify(img), url: url });
                     }
                 }
@@ -66,18 +66,18 @@ module.exports={
 
     showAllImagesProcess:(idUser)=>{
         return new Promise((resolve,reject)=>{
-            var listUrl = [];
+            let listUrl = [];
             colImage.find({idUser : idUser},(err, img)=> {
                 if(err){
                     reject('Error')
                 }else{
                     img.forEach(elment=>{
-                        var params = { 
+                        let params = { 
                             Bucket: aws_env.Bucket,
                             Key: elment.key,
                             Expires: 60 // le temps d'expiration de l'url
                         }
-                        var url = s3.getSignedUrl('getObject', params);
+                        let url = s3.getSignedUrl('getObject', params);
                         listUrl.push(url);
                     });
                     resolve({message: "All images !",imgs: JSON.stringify(img), listUrl: listUrl});
@@ -101,7 +101,7 @@ module.exports={
                         if(err){
                             reject('Error')
                         }else{
-                            var params = {
+                            let params = {
                                 Bucket: aws_env.Bucket, 
                                 Key: key
                             };
@@ -122,48 +122,41 @@ module.exports={
             let listUrl = []
             let listImages=[];
             callbackSubscriberImage(myListUser)
-            .then( res => {
-                resolve({message: "subscriber images !",listImgs: res, listUrl: listUrl});
+            .then( (res) => {
+                resolve({message: "subscriber images !",listImgs: res.Img, listUrl: res.urls});
             })
-            .catch( err => {
-                reject(err);
+            .catch( errCallBack => {
+                reject(errCallBack);
             })
-            
-           
         })
-      
     }
-
 
 }
 
-callbackSubscriberImage = (myListUser) => {    
+callbackSubscriberImage = (myListUsers) => {    
     return new Promise((resolve, reject)=>{
         let listImages=[];
-        myListUser.forEach( (idUser,index) => {
+        let listURLs=[];
+
+        myListUsers.forEach( (idUser,index) => {
             colImage.find({idUser:idUser})
             .exec()
             .then((img)=>{
-                /*img.forEach((elment)=>{
-                    var params = { 
+                img.forEach((elment)=>{
+                    let params = { 
                         Bucket: aws_env.Bucket,
                         Key: elment.key,
                         Expires: 60 
                         }
                     let url = s3.getSignedUrl('getObject', params);
-                    listUrl= listUrl.concat(url);
-                    console.log(listUrl)
-                })*/
+                    listURLs= listURLs.concat(url);
+                })
                 listImages.push(img);
-                console.log('toto',myListUser.length);
-                if (index == myListUser.length-1){
-                    console.log('LISTiMG', listImages);
-                    resolve(listImages);
+                if (index == myListUsers.length-1){
+                    resolve({Img:listImages,urls:listURLs});
                 }
-                
             })
-            .catch((errType)=>{
-                console.log('catch error');
+            .catch((errTypeFindMongoose)=>{
                 reject('Error 404');
             })
         })               
