@@ -14,12 +14,14 @@ module.exports={
             nameUser: req.body.nameUser,
             lastname: req.body.lastname,
             age: req.body.age,
-            pseudo:req.body.pseudo,
+            pseudo:req.body.pseudo.toLowerCase(),
             username: req.body.username,
             password: pwd,
+            subscribe: [],
+            subscriber: [],
             token: tkn
         });
-
+        console.log(myUser.pseudo)
         processUsers.addUserProcess(myUser)
         .then((result)=>{
             res.status(200).json(result)
@@ -44,6 +46,7 @@ module.exports={
     
     showAllUsersAction:(req,res)=>{ 
         pseudo=req.params.pseudo
+        pseudo=pseudo.toLowerCase()
         processUsers.showAllUsersProcess(pseudo)
         .then((result)=>{
             res.status(200).json(result)

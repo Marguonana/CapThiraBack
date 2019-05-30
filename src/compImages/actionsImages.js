@@ -1,5 +1,6 @@
 const colImages  = require('./modelsImages');
 const processImages = require('./processImages');
+const processUsers = require('../compUsers/processUsers')
 const generateSafeId = require('generate-safe-id');
 const re = /(?:\.([^.]+))?$/;
 
@@ -75,6 +76,23 @@ module.exports={
             if(result==='Erreur lors de la suppression') res.status(500).send('Erreur lors de la suppression')
         })
     },
+
+    showAllImagesSubscribersAction:(req,res)=>{
+        processUsers.showUserProcess(req.params.idUser)
+        .then((myUser)=>{
+            processImages.showAllImagesSubscribersProcess(myUser.user.subscribe)
+            .then((allImagesSubscribe)=>{
+                res.status(200).json(allImagesSubscribe)
+            })
+            .catch((typeERR)=>{
+                res.status(404).json("There was a problem finding the image.")
+            })
+        })
+        .catch((errTypeUser)=>{
+            if (errTypeUser==='Do not found user') res.status(404).send('Do not found user')
+            if (errTypeUser==='Error') res.status(404).send('Error in your request !')
+        })
+    }
     
 
 }
