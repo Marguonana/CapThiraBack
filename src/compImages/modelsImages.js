@@ -8,7 +8,8 @@ var ImagesSchema = new Schema (
         title:{type:String, required:true},
         idUser:{type:String},
         datePublication: {type:Date, required: true},
-        size: {type:Number, required: true }
+        size: {type:Number, required: true },
+        like: []
     }
 );
 

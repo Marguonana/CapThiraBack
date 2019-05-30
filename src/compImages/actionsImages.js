@@ -4,7 +4,7 @@ const generateSafeId = require('generate-safe-id');
 const re = /(?:\.([^.]+))?$/;
 
 module.exports={
-    
+
     addImageAction:(req,res)=>{
         var bufImg  = Buffer.from(req.body.img.replace(/^data:image\/\w+;base64,/, ""),'base64');
         var myImage= new colImages({
@@ -58,9 +58,9 @@ module.exports={
         })
     },
 
-    updateImageAction:(req,res)=>{
+    //updateImageAction:(req,res)=>{
       //à définir
-    },
+    //},
     
     deleteImageAction:(req,res)=>{
         var key = req.params.key;
@@ -76,5 +76,33 @@ module.exports={
         })
     },
     
+    likeAction: (req, res) =>{
+        const user = {idUser : req.body.idUser, pseudo : req.body.pseudo};
+        const idImage = req.body.idImage;
+        
+        processImages.likeProcess(idImage,user)
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((errType)=>{
+            console.log(errType)
+            if(errType=="Do not found image") res.status(404).send("No user found.")
+            if(errType=="Error in save methode") res.status(400).send('Error in the save methode')
+            if(errType=="Error") res.status(400).send("There was a problem to like this image.")
+        })
+    },
 
+    showAllLikeAction: (req, res) =>{
+        const idImage = req.params.id;
+
+        processImages.showAllLikeProcess(idImage)
+        .then((result)=>{
+            res.status(200).json(result)
+        })
+        .catch((errType)=>{
+            console.log(errType)
+            if(errType=="Do not found image") res.status(404).send("No image found.")
+            if(errType=="Error") res.status(400).send("There was a problem showing likes.")
+        })
+    },
 }
