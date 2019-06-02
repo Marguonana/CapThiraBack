@@ -77,7 +77,7 @@ module.exports={
         })
     },
 
-    showAllImagesSubscribersAction:(req,res)=>{
+    showAllImagesSubscriptionsAction:(req,res)=>{
         processUsers.showUserProcess(req.params.idUser)
         .then((myUser)=>{
             processImages.showAllImagesSubscribersProcess(myUser.user.subscribe)

@@ -117,11 +117,11 @@ module.exports={
         })
     },
     
-    showAllImagesSubscribersProcess:(myListUser)=>{
+    showAllImagesSubscriptionsProcess:(myListUser)=>{
         return new Promise((resolve,reject)=>{
             let listUrl = []
             let listImages=[];
-            callbackSubscriberImage(myListUser)
+            callbackSubscriptionImage(myListUser)
             .then( (res) => {
                 resolve({message: "subscriber images !",listImgs: res.Img, listUrl: res.urls});
             })
@@ -133,7 +133,7 @@ module.exports={
 
 }
 
-callbackSubscriberImage = (myListUsers) => {    
+callbackSubscriptionImage = (myListUsers) => {    
     return new Promise((resolve, reject)=>{
         let listImages=[];
         let listURLs=[];
