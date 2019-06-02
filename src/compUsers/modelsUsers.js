@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
-const usersSchema = new Schema (
+/**
+ * subscribe: Là où je me suis abonné
+ * subscriber: Mes abonnées
+ */
+var usersSchema = new Schema (
     {
         nameUser: {type: String, required: true},
         lastname:{type:String, required:true},
@@ -18,10 +21,10 @@ const usersSchema = new Schema (
 
 usersSchema.virtual('name').get(function(){
     return (this.name + ' ' + this.lastname);
-})
+});
 
 usersSchema.virtual('url').get(function(){
     return '/utilisateurs'
-})
+});
 
 module.exports = mongoose.model('Utilisateurs', usersSchema);
