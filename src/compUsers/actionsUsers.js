@@ -160,10 +160,9 @@ module.exports={
         })
     },
 
-    showAllSubscriberAction: (req, res) =>{
+    showAllSubscriptionAction: (req, res) =>{
         const idUser = req.params.id;
-
-        processUsers.showAllSubscriberProcess(idUser)
+        processUsers.showAllSubscriptionProcess(idUser)
         .then((result)=>{
             res.status(200).json(result)
         })

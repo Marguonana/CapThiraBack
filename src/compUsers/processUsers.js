@@ -154,13 +154,13 @@ module.exports={
         })    
     }, 
 
-    showAllSubscriberProcess: (idUser) =>{
+    showAllSubscriptionProcess: (idUser) =>{
         return new Promise((resolve,reject)=>{
             colUsers.findOne({_id: idUser},(err, user)=> {
                 if (!user) reject('Do not found user')
                 if (err) reject('Error')
-                subscriber = user.subscribe
-                resolve({subscriber})     
+                subscription = user.subscribe
+                resolve({subscription})     
             });
         })
     }
