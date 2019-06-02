@@ -80,7 +80,7 @@ module.exports={
     showAllImagesSubscriptionsAction:(req,res)=>{
         processUsers.showUserProcess(req.params.idUser)
         .then((myUser)=>{
-            processImages.showAllImagesSubscribersProcess(myUser.user.subscribe)
+            processImages.showAllImagesSubscriptionsProcess(myUser.user.subscribe)
             .then((allImagesSubscribe)=>{
                 res.status(200).json(allImagesSubscribe)
             })
