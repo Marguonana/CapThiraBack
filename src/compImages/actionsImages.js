@@ -14,9 +14,10 @@ module.exports={
             title:req.body.titre,
             idUser:req.body.idUser,
             datePublication:req.body.datePublication,
-            size:req.body.taille
+            size:req.body.taille,
+            pseudo: req.body.pseudo
         })
-        console.log(myImage)
+        console.log(myImage);
         processImages.addImageProcess(myImage, bufImg)
         .then((result)=>{
             // console.log(status)
@@ -77,10 +78,10 @@ module.exports={
         })
     },
 
-    showAllImagesSubscribersAction:(req,res)=>{
+    showAllImagesSubscriptionsAction:(req,res)=>{
         processUsers.showUserProcess(req.params.idUser)
         .then((myUser)=>{
-            processImages.showAllImagesSubscribersProcess(myUser.user.subscribe)
+            processImages.showAllImagesSubscriptionsProcess(myUser.user.subscribe)
             .then((allImagesSubscribe)=>{
                 res.status(200).json(allImagesSubscribe)
             })

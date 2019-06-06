@@ -67,6 +67,7 @@ module.exports={
     showAllImagesProcess:(idUser)=>{
         return new Promise((resolve,reject)=>{
             let listUrl = [];
+            console.log(idUser)
             colImage.find({idUser : idUser},(err, img)=> {
                 if(err){
                     reject('Error')
@@ -80,6 +81,7 @@ module.exports={
                         let url = s3.getSignedUrl('getObject', params);
                         listUrl.push(url);
                     });
+                    console.log(img)
                     resolve({message: "All images !",imgs: JSON.stringify(img), listUrl: listUrl});
                 }
             });
@@ -117,11 +119,11 @@ module.exports={
         })
     },
     
-    showAllImagesSubscribersProcess:(myListUser)=>{
+    showAllImagesSubscriptionsProcess:(myListUser)=>{
         return new Promise((resolve,reject)=>{
             let listUrl = []
             let listImages=[];
-            callbackSubscriberImage(myListUser)
+            callbackSubscriptionImage(myListUser)
             .then( (res) => {
                 resolve({message: "subscriber images !",listImgs: res.Img, listUrl: res.urls});
             })
@@ -133,13 +135,12 @@ module.exports={
 
 }
 
-callbackSubscriberImage = (myListUsers) => {    
+callbackSubscriptionImage = (myListUsers) => {    
     return new Promise((resolve, reject)=>{
-        let listImages=[];
-        let listURLs=[];
-
+        let listImages= new Array();
+        let listURLs= new Array();
         myListUsers.forEach( (idUser,index) => {
-            colImage.find({idUser:idUser})
+            colImage.find({idUser:idUser.idSubscription})
             .exec()
             .then((img)=>{
                 img.forEach((elment)=>{
@@ -149,9 +150,9 @@ callbackSubscriberImage = (myListUsers) => {
                         Expires: 60 
                         }
                     let url = s3.getSignedUrl('getObject', params);
-                    listURLs= listURLs.concat(url);
+                    listURLs.push(url);
+                    listImages.push(elment);
                 })
-                listImages.push(img);
                 if (index == myListUsers.length-1){
                     resolve({Img:listImages,urls:listURLs});
                 }
