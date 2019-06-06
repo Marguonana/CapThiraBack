@@ -51,6 +51,25 @@ describe('tests images',()=>{
         });
     });
 
+    describe('GET /All images subscribers', () => {
+        it('it should Get all the images of all subscribers', (done) => {
+            
+            let idUser = ObjectId("5ca2685087cf0102f401068a") 
+            request(app).get('/images/showallimagessubscribers/'+idUser)
+            .then((res)=> {
+                expect(res.status).to.equal(200);
+                expect(res.body).to.be.a('object')
+                expect(res.body).to.have.property("listUrl")
+                expect(res.body).to.have.property("listImgs")
+                expect(res.body).to.have.property("message")
+                done()
+            })
+            .catch((err)=>{
+                done(err)
+            })  
+        });
+    });
+
     describe('GET /One image', () => {
         it('it should Get one image', (done) => {
             
