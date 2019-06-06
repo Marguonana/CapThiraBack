@@ -120,8 +120,11 @@ module.exports={
                 else
                 if (err) reject('Error')
                 else{
-                img.like.push(user)
-                user.save((err,img)=>{
+                    img.like.forEach(element => {
+                        if (element.idUser == user.idUser) resolve({message:'The user has already liked this image'});
+                    });
+                    img.like.push(user)
+                    img.save((err,img)=>{
                     if(err){
                         reject("Error in save methode")
                     }

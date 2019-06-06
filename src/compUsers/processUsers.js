@@ -7,7 +7,11 @@ module.exports={
     
     addUserProcess:(myUser)=>{  
         return new Promise((resolve, reject)=>{
-            console.log(myUser);
+            //console.log(myUser);
+            colUsers.findOne({pseudo: myUser.pseudo},(err, user)=> {
+                if (user) resolve({message:'User already added with this pseudo'})
+                if (err) reject('Error')    
+            });
             myUser.save(function(err,user){
                 if(err) reject('Error');
                 resolve({message:'User posted !', user})
@@ -121,8 +125,11 @@ module.exports={
                 else
                 if (err) reject('Error')
                 else{
-                user.subscribe.push(subscriber)
-                user.save((err,user)=>{
+                    user.subscribe.forEach(element => {
+                        if (element.idUser == subscriber.idUser) resolve({message:'The user has already subscribed to this person'});
+                    });
+                    user.subscribe.push(subscriber)
+                    user.save((err,user)=>{
                     if(err){
                         reject("Error in save methode")
                     }
