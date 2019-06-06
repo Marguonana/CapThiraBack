@@ -16,7 +16,7 @@ router.get('/login/:username/:password',actionsUsers.authenticateUserAction);
 router.post('/post',actionsUsers.addUserAction);
 
 router.post('/subscribe',actionsUsers.subscribeAction);
-router.get('/showallsubscriber/:id',actionsUsers.showAllSubscriberAction);
+router.get('/showallsubscriptions/:id',actionsUsers.showAllSubscriptionsAction);
 
 router.delete('/delete/:id',actionsUsers.deleteUserAction);
 router.put('/update/:id',actionsUsers.updateUserAction);

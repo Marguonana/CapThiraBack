@@ -87,7 +87,7 @@ module.exports={
                 if (!passwordIsValid) 
                     reject('Invalid password')
                 else
-                    resolve({message:'success login',user,auth:true, token: user.token, idMongo: user._id})
+                    resolve({message:'success login',user,auth:true, token: user.token, idMongo: user._id, pseudo: user.pseudo})
                 }
                 
             })
@@ -114,32 +114,53 @@ module.exports={
         })
     },
 
-    subscribeProcess: (idUser, subscriber) =>{
+    /**
+     * idSubscriber: id de celui qui s'abonne
+     * subscribe: Obj contenant { idSubscription, pseudoSubscription} les infos de celui à qui on s'abonne
+     * pseudoSubscriber : pseudo de celui qui s'abonne
+     */
+    subscribeProcess: (idSubscriber, subscribe, pseudoSubscriber) =>{
         return new Promise((resolve,reject)=>{
-            colUsers.findOne({_id: ObjectId(idUser)},(err, user)=> {
+            colUsers.findOne({_id: ObjectId(idSubscriber)},(err, user)=> {
                 if (!user) reject('Do not found user')
                 else
                 if (err) reject('Error')
                 else{
-                user.subscribe.push(subscriber)
-                user.save((err,user)=>{
-                    if(err){
-                        reject("Error in save methode")
-                    }
-                    resolve({message:'Subscriber added!',user})
-                });  
-            }    
-        });
-    })    
+                    user.subscribe.push(subscribe);
+                    user.save((err,user)=>{
+                        if(err){
+                            reject("Error in save methode")
+                        }
+                        colUsers.findOne({_id: ObjectId(subscribe.idSubscription)},(err, userSubscription)=> {
+                            if (!userSubscription) 
+                                reject('Do not found userSubscription')
+                            else if (err) 
+                                reject('Error')
+                            else{
+                                const subscriber = {idSubscriber: idSubscriber, pseudoSubscriber : pseudoSubscriber};
+                                userSubscription.subscriber.push(subscriber);
+                                userSubscription.save((err,userSubscription)=>{
+                                    if(err){
+                                        reject("Error in save methode subscription")
+                                    }
+                                    resolve({message:'Subscription added!',userSubscription})
+                                });  
+                            }    
+                        });
+                        resolve({message:'Subscriber added!',user})
+                    });  
+                }    
+            });
+        })    
     }, 
 
-    showAllSubscriberProcess: (idUser) =>{
+    showAllSubscriptionsProcess: (idUser) =>{
         return new Promise((resolve,reject)=>{
             colUsers.findOne({_id: idUser},(err, user)=> {
                 if (!user) reject('Do not found user')
                 if (err) reject('Error')
-                subscriber = user.subscribe
-                resolve({subscriber})     
+                subscription = user.subscribe
+                resolve({subscription})     
             });
         })
     }

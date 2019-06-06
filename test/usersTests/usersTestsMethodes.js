@@ -16,7 +16,7 @@ describe('tests users',()=>{
                 nameUser: 'ZAIDI',
                 lastname: 'Mohand Ameziane',
                 age: 23,
-                pseudo:'testUser',
+                pseudo:'TestPourMIi',
                 username: 'mohandamezianezaidi@gmail.com',
                 password: 'pwd1236546'
             })

@@ -7,6 +7,7 @@ var ImagesSchema = new Schema (
         key: {type:String, required: true},
         title:{type:String, required:true},
         idUser:{type:String},
+        pseudo:{type:String, required:true},
         datePublication: {type:Date, required: true},
         size: {type:Number, required: true },
         like: []
