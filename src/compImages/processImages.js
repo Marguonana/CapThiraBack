@@ -118,6 +118,25 @@ module.exports={
             })
         })
     },
+
+    likeProcess: (idImage, user) =>{
+        return new Promise((resolve,reject)=>{
+            colImage.findOne({_id: ObjectId(idImage)},(err, img)=> {
+                if (!img) reject('Do not found image')
+                else
+                if (err) reject('Error')
+                else{
+                img.like.push(user)
+                user.save((err,img)=>{
+                    if(err){
+                        reject("Error in save methode")
+                    }
+                    resolve({message:'Like added!',img})
+                });  
+            }    
+        });
+    })    
+    }, 
     
     showAllImagesSubscriptionsProcess:(myListUser)=>{
         return new Promise((resolve,reject)=>{
