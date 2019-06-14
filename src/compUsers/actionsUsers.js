@@ -21,7 +21,6 @@ module.exports={
             subscriber: [],
             token: tkn
         });
-        console.log(myUser.pseudo)
         processUsers.addUserProcess(myUser)
         .then((result)=>{
             res.status(200).json(result)

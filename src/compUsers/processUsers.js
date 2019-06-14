@@ -7,11 +7,16 @@ module.exports={
     
     addUserProcess:(myUser)=>{  
         return new Promise((resolve, reject)=>{
-            console.log(myUser);
-            myUser.save(function(err,user){
-                if(err) reject('Error');
-                resolve({message:'User posted !', user})
-            })
+            // On verifie si un utilisateur est deja crée avec le meme Pseudo
+            colUsers.findOne({pseudo: myUser.pseudo},(err, user1)=> {
+                if (err) reject('Error')
+                if (!user1){
+                    myUser.save(function(err,user){
+                        if(err) reject('Error');
+                        resolve({message:'User posted !', user})
+                    })
+                }else{ resolve({message:'A user has already registered with this pseudo!'}) }      
+            });
         })
          
     },
@@ -49,6 +54,7 @@ module.exports={
                 user.username= myUser.username
                 user.password= myUser.password
                 user.token= myUser.token
+                
                 user.save((err,user)=>{
                     if(err){
                         reject("Error in save methode")
@@ -126,29 +132,57 @@ module.exports={
                 else
                 if (err) reject('Error')
                 else{
-                    user.subscribe.push(subscribe);
-                    user.save((err,user)=>{
-                        if(err){
-                            reject("Error in save methode")
-                        }
-                        colUsers.findOne({_id: ObjectId(subscribe.idSubscription)},(err, userSubscription)=> {
-                            if (!userSubscription) 
-                                reject('Do not found userSubscription')
-                            else if (err) 
-                                reject('Error')
-                            else{
-                                const subscriber = {idSubscriber: idSubscriber, pseudoSubscriber : pseudoSubscriber};
-                                userSubscription.subscriber.push(subscriber);
-                                userSubscription.save((err,userSubscription)=>{
-                                    if(err){
-                                        reject("Error in save methode subscription")
-                                    }
-                                    resolve({message:'Subscription added!',userSubscription})
-                                });  
-                            }    
-                        });
-                        resolve({message:'Subscriber added!',user})
-                    });  
+                    var test = false;
+                    user.subscribe.forEach((element)=>{
+                        if(element.pseudo == subscribe.pseudoSubscriber){
+                            // Cette partie c'est pour s'avoir si l'utilisateur s'est deja abonné à cette personne, si c'est le cas, il se désabonne
+                            test = true;
+                            var newListSubscribe = user.subscribe.filter((el)=>{
+                                if (el.pseudoSubscription !== subscribe.pseudoSubscription) return el;
+                            })
+                            user.subscribe = newListSubscribe;
+                            user.save((err)=>{
+                                if(err) reject("Error in save methode")
+                            })
+
+                            colUsers.findOne({_id: ObjectId(subscribe.idSubscription)},(err, userSubscription)=> {
+                                var newListSubscriber = userSubscription.subscriber.filter((el)=>{
+                                    if (el.pseudoSubscriber !== pseudoSubscriber) return el;
+                                })
+                                userSubscription.subscriber = newListSubscriber;
+                                userSubscription.save((err)=>{
+                                    if(err) reject("Error in save methode")
+                                })
+                            })
+                            resolve({message : 'This user has already subscribed to this person!'})
+                        } 
+                     })
+                    if(!test){
+                        // Cette partie pour que l'utilisateur s'abonne à la personne.
+                        user.subscribe.push(subscribe);
+                        user.save((err,user)=>{
+                            if(err){
+                                reject("Error in save methode")
+                            }
+                            colUsers.findOne({_id: ObjectId(subscribe.idSubscription)},(err, userSubscription)=> {
+                                if (!userSubscription) 
+                                    reject('Do not found userSubscription')
+                                else if (err) 
+                                    reject('Error')
+                                else{
+                                    const subscriber = {idSubscriber: idSubscriber, pseudoSubscriber : pseudoSubscriber};
+                                    userSubscription.subscriber.push(subscriber);
+                                    userSubscription.save((err,userSubscription)=>{
+                                        if(err){
+                                            reject("Error in save methode subscription")
+                                        }
+                                        resolve({message:'Subscription added!',userSubscription})
+                                    });  
+                                }    
+                            });
+                            resolve({message:'Subscriber added!',user})
+                        });  
+                    }   
                 }    
             });
         })    

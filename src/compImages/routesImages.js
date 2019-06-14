@@ -14,8 +14,8 @@ router.get('/showallimagessubscriptions/:idUser',actionsImages.showAllImagesSubs
 router.post('/post',actionsImages.addImageAction);
 router.delete('/delete/:id/:key',actionsImages.deleteImageAction);
 
-router.post('like', actionsImages.likeAction);
-router.get('showalllike/:idImage', actionsImages.showAllLikeAction);
+router.post('/like', actionsImages.likeAction);
+router.get('/showalllike/:idImage', actionsImages.showAllLikeAction);
 
 //router.put('/update/:id',actionsImages.updateImageAction);
 
