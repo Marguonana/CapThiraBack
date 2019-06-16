@@ -9,7 +9,7 @@ module.exports={
     addImageAction:(req,res)=>{
         var bufImg  = Buffer.from(req.body.img.replace(/^data:image\/\w+;base64,/, ""),'base64');
         var myImage= new colImages({
-            //Générer un nom unique pour l'image pour ne pas écraser d'autres images 
+            //Générer un nom unique pour l'image pour ne pas écraser d'autres images qui sont deja dans le S3
             key: generateSafeId()+'.'+ re.exec(req.body.name)[1],
             title:req.body.titre,
             idUser:req.body.idUser,
@@ -17,7 +17,7 @@ module.exports={
             size:req.body.taille,
             pseudo: req.body.pseudo
         })
-        console.log(myImage);
+        //console.log(myImage);
         processImages.addImageProcess(myImage, bufImg)
         .then((result)=>{
             // console.log(status)
@@ -93,8 +93,8 @@ module.exports={
             if (errTypeUser==='Do not found user') res.status(404).send('Do not found user')
             if (errTypeUser==='Error') res.status(404).send('Error in your request !')
         })
-    }
-    
+    },
+        
     likeAction: (req, res) =>{
         const user = {idUser : req.body.idUser, pseudo : req.body.pseudo};
         const idImage = req.body.idImage;

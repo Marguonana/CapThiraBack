@@ -29,12 +29,11 @@ module.exports={
                         ContentEncoding: 'base64',
                         ContentType: 'image/jpeg'
                     };
-                    console.log(params)
                     s3.putObject(params,(err)=>{
                         if (err) {
                             reject("erreur s3")
                         }
-                    });
+                     });
                     return resolve({message:'Image posted !'})
                 }
             })  
@@ -123,19 +122,36 @@ module.exports={
         return new Promise((resolve,reject)=>{
             colImage.findOne({_id: ObjectId(idImage)},(err, img)=> {
                 if (!img) reject('Do not found image')
-                else
                 if (err) reject('Error')
                 else{
-                img.like.push(user)
-                user.save((err,img)=>{
-                    if(err){
-                        reject("Error in save methode")
+                    var test = false;
+                    img.like.forEach((element)=>{
+                        if(element.pseudo == user.pseudo){
+                            // Cette partie pour verifier si l'utilisateur a deja liké cette image, si c'est le cas il la deslike
+                            test=true;
+                            var newListLike = img.like.filter((el)=>{
+                                if (el.pseudo !== user.pseudo){
+                                    return el;
+                                }
+                            })
+                            img.like=newListLike;
+                            img.save((err,img)=>{
+                                if(err) {reject("Error in save methode")}
+                                resolve({message:'The user disliks this image!', img: newListLike});
+                            });  
+                        }
+                    })
+                    if(!test){
+                        // Cette partie pour que l'utilisateur like l'image
+                        img.like.push(user)
+                        img.save((err,img)=>{
+                            if(err)reject("Error in save methode")
+                            else resolve({message:'Like added!',img})
+                        }); 
                     }
-                    resolve({message:'Like added!',img})
-                });  
-            }    
-        });
-    })    
+                }    
+            });
+        })    
     }, 
     
     showAllImagesSubscriptionsProcess:(myListUser)=>{
