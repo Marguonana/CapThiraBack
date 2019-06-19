@@ -134,7 +134,7 @@ module.exports={
                 else{
                     var test = false;
                     user.subscribe.forEach((element)=>{
-                        if(element.pseudo == subscribe.pseudoSubscriber){
+                        if(element.pseudoSubscription == subscribe.pseudoSubscription){
                             // Cette partie c'est pour s'avoir si l'utilisateur s'est deja abonné à cette personne, si c'est le cas, il se désabonne
                             test = true;
                             var newListSubscribe = user.subscribe.filter((el)=>{
