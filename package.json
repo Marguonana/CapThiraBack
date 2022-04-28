@@ -9,7 +9,7 @@
   "author": " <Marguerite Nana>",
   "license": "ISC",
   "devDependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.4",
     "babel-install": "2.1.0",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
