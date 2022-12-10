@@ -11,7 +11,7 @@
   "devDependencies": {
     "async": "^2.6.1",
     "babel-install": "2.1.0",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "generate-safe-id": "^1.0.2",
     "jsonwebtoken": "^8.5.1"
