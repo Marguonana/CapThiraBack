@@ -14,7 +14,7 @@
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "generate-safe-id": "^1.0.2",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^9.0.0"
   },
   "dependencies": {
     "aws-sdk": "^2.423.0",
